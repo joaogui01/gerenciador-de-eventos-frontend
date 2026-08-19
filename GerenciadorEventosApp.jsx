@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   Home, BarChart2, Layers, User, ArrowLeft, Plus, Eye, EyeOff,
   MapPin, Calendar, Search, MoreVertical, LogOut, Users as UsersIcon,
-  ScanLine, Ticket as TicketIcon,
+  ScanLine, Ticket as TicketIcon, Bell, PartyPopper,
 } from "lucide-react";
 
 /*
@@ -39,9 +39,9 @@ const usuarioMock = {
 };
 
 const eventosExplorarIniciais = [
-  { idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", vagasTotaisEvento: 100, vagasDisponiveisEvento: 42 },
-  { idEvento: 302, nomeEvento: "ExpoThe", localEvento: "Teresina", dataEvento: "15 de Abril", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá, com degustação e workshops.", vagasTotaisEvento: 50, vagasDisponiveisEvento: 9 },
-  { idEvento: 303, nomeEvento: "Feira do Livro", localEvento: "Teresina", dataEvento: "22 de Maio", hora: "9h", descricaoEvento: "Feira literária com lançamentos, bate-papos e sebo colaborativo.", vagasTotaisEvento: 200, vagasDisponiveisEvento: 180 },
+  { idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", vagasTotaisEvento: 100, vagasDisponiveisEvento: 42 },
+  { idEvento: 302, nomeEvento: "ExpoThe", localEvento: "Teresina", dataEvento: "15 de Abril", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá, com degustação e workshops.", organizador: "Marina Chás", vagasTotaisEvento: 50, vagasDisponiveisEvento: 9 },
+  { idEvento: 303, nomeEvento: "Feira do Livro", localEvento: "Teresina", dataEvento: "22 de Maio", hora: "9h", descricaoEvento: "Feira literária com lançamentos, bate-papos e sebo colaborativo.", organizador: "Biblioteca Municipal", vagasTotaisEvento: 200, vagasDisponiveisEvento: 180 },
 ];
 
 const meusEventosIniciais = [
@@ -75,24 +75,22 @@ const meusEventosIniciais = [
 ];
 
 const minhasInscricoesIniciais = [
-  { idInscricao: 501, idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", codigoHashTicket: "a1b2-c3d4-e5f6" },
+  { idInscricao: 501, idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", codigoHashTicket: "a1b2-c3d4-e5f6" },
 ];
 
 // ---------- componentes de base ----------
 
 function TopoVerde({ titulo, aoVoltar, acaoDireita, alto }) {
   return (
-    <div style={{ background: COR.verde, padding: alto ? "56px 24px 90px" : "20px 24px 30px", position: "relative" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {aoVoltar && (
-            <button onClick={aoVoltar} aria-label="Voltar" style={botaoIcone}>
-              <ArrowLeft size={22} color={COR.escuro} />
-            </button>
-          )}
-          <h1 style={{ fontSize: alto ? 24 : 18, fontWeight: 700, color: COR.escuro, margin: 0 }}>{titulo}</h1>
-        </div>
-        {acaoDireita}
+    <div style={{ background: COR.verde, padding: alto ? "56px 24px 90px" : "22px 20px 30px", position: "relative" }}>
+      <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 32 }}>
+        {aoVoltar && (
+          <button onClick={aoVoltar} aria-label="Voltar" style={{ ...botaoIcone, position: "absolute", left: 0 }}>
+            <ArrowLeft size={22} color={COR.escuro} />
+          </button>
+        )}
+        {titulo && <h1 style={{ fontSize: alto ? 24 : 18, fontWeight: 700, color: COR.escuro, margin: 0, textAlign: "center", padding: "0 44px" }}>{titulo}</h1>}
+        {acaoDireita && <div style={{ position: "absolute", right: 0 }}>{acaoDireita}</div>}
       </div>
     </div>
   );
@@ -105,7 +103,7 @@ function Painel({ children, semSubir }) {
         background: COR.fundo,
         borderTopLeftRadius: 36,
         borderTopRightRadius: 36,
-        marginTop: semSubir ? 0 : -28,
+        marginTop: semSubir ? 0 : -18,
         padding: "26px 22px 110px",
         minHeight: 420,
         position: "relative",
@@ -235,16 +233,17 @@ function NavInferior({ ativo, aoNavegar }) {
     <div
       style={{
         position: "fixed",
-        bottom: 18,
+        bottom: 0,
         left: "50%",
         transform: "translateX(-50%)",
-        width: "calc(100% - 44px)",
-        maxWidth: 386,
+        width: "100%",
+        maxWidth: 430,
         background: COR.verdeClaro,
-        borderRadius: 999,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
         display: "flex",
         justifyContent: "space-around",
-        padding: "10px",
+        padding: "16px 12px",
         boxSizing: "border-box",
       }}
     >
@@ -259,8 +258,8 @@ function NavInferior({ ativo, aoNavegar }) {
               background: ativoAgora ? COR.verde : "transparent",
               border: "none",
               borderRadius: "50%",
-              width: 46,
-              height: 46,
+              width: 44,
+              height: 44,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -368,6 +367,7 @@ function TelaCadastro({ voltar, acaoCadastro }) {
 function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
   const [filtro, setFiltro] = useState("Data");
   const [busca, setBusca] = useState("");
+  const [avisoNotificacao, setAvisoNotificacao] = useState(false);
 
   const filtrados = eventosExplorar.filter((e) => {
     if (!busca) return true;
@@ -377,53 +377,73 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
 
   return (
     <div>
-      <TopoVerde titulo="" />
-      <div style={{ background: COR.verde, padding: "0 24px 40px", marginTop: -30 }}>
-        <p style={{ fontSize: 20, fontWeight: 700, color: COR.escuro, margin: "0 0 18px" }}>Olá, {usuarioMock.nome}.</p>
-        <div style={{ display: "flex", gap: 24 }}>
-          <button onClick={() => ir("meus-eventos")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+      <div style={{ background: COR.verde, padding: "22px 24px 40px" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 22 }}>
+          <p style={{ fontSize: 20, fontWeight: 700, color: COR.escuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta.</p>
+          <button
+            onClick={() => setAvisoNotificacao(true)}
+            aria-label="Notificações"
+            style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center", flexShrink: 0 }}
+          >
+            <Bell size={18} color={COR.escuro} />
+          </button>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 32 }}>
+          <button onClick={() => ir("meus-eventos")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "center" }}>
             <p style={{ fontSize: 12, color: COR.escuro, margin: 0 }}>Meus Eventos</p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0 }}>{meusEventos.length}</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{meusEventos.length}</p>
           </button>
           <div style={{ width: 1, background: "rgba(5,34,36,0.3)" }} />
-          <button onClick={() => ir("minhas-inscricoes")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+          <button onClick={() => ir("minhas-inscricoes")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "center" }}>
             <p style={{ fontSize: 12, color: COR.escuro, margin: 0 }}>Minhas Inscrições</p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: COR.azul, margin: 0 }}>{minhasInscricoes.length}</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: COR.azul, margin: 0, textAlign: "center" }}>{minhasInscricoes.length}</p>
           </button>
         </div>
       </div>
       <Painel semSubir>
-        <div style={{ marginTop: -58 }}>
-          <div style={{ background: COR.branco, borderRadius: 999, padding: "6px", display: "flex", alignItems: "center", boxShadow: "0 6px 16px rgba(0,0,0,0.06)" }}>
-            <Search size={18} color={COR.escuro} style={{ marginLeft: 10 }} />
-            <input
-              value={busca}
-              onChange={(e) => setBusca(e.target.value)}
-              placeholder={`Buscar por ${filtro.toLowerCase()}...`}
-              style={{ flex: 1, border: "none", outline: "none", padding: "8px 10px", fontSize: 13, background: "transparent" }}
-            />
-          </div>
-          <div style={{ display: "flex", gap: 8, margin: "14px 0 22px" }}>
-            {["Nome", "Local", "Data"].map((op) => (
-              <button
-                key={op}
-                onClick={() => setFiltro(op)}
-                style={{
-                  flex: 1,
-                  padding: "10px 0",
-                  borderRadius: 999,
-                  border: "none",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  background: filtro === op ? COR.verde : COR.verdeClaro,
-                  color: COR.escuro,
-                }}
-              >
-                {op}
-              </button>
-            ))}
-          </div>
+        {avisoNotificacao && <Aviso texto="Notificações ainda não estão disponíveis nesta versão." tipo="ok" />}
+
+        <div
+          style={{
+            border: `1.5px solid ${COR.verde}`,
+            borderRadius: 999,
+            padding: "10px 0",
+            textAlign: "center",
+            marginBottom: 18,
+          }}
+        >
+          <span style={{ fontSize: 14, fontWeight: 700, color: COR.escuro, textDecoration: "underline", textUnderlineOffset: 4 }}>Explorar Eventos</span>
+        </div>
+
+        <div style={{ background: COR.verdeClaro, borderRadius: 999, padding: "6px", display: "flex", alignItems: "center", marginBottom: 12 }}>
+          <Search size={18} color={COR.escuro} style={{ marginLeft: 10 }} />
+          <input
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            placeholder={`Buscar por ${filtro.toLowerCase()}...`}
+            style={{ flex: 1, border: "none", outline: "none", padding: "8px 10px", fontSize: 13, background: "transparent" }}
+          />
+        </div>
+        <div style={{ display: "flex", gap: 8, marginBottom: 22 }}>
+          {["Nome", "Local", "Data"].map((op) => (
+            <button
+              key={op}
+              onClick={() => setFiltro(op)}
+              style={{
+                flex: 1,
+                padding: "10px 0",
+                borderRadius: 999,
+                border: "none",
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: "pointer",
+                background: filtro === op ? COR.verde : COR.verdeClaro,
+                color: COR.escuro,
+              }}
+            >
+              {op}
+            </button>
+          ))}
         </div>
 
         {filtrados.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13 }}>Nenhum evento encontrado.</p>}
@@ -436,19 +456,18 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
               width: "100%",
               background: "none",
               border: "none",
-              textAlign: "left",
               cursor: "pointer",
               padding: "12px 0",
               borderBottom: i < filtrados.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
-              display: "flex",
-              justifyContent: "space-between",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
               alignItems: "center",
-              gap: 8,
+              gap: 6,
             }}
           >
-            <span style={{ fontWeight: 700, fontSize: 14, color: COR.escuro }}>{ev.nomeEvento}</span>
-            <span style={{ fontSize: 13, color: COR.escuro, opacity: 0.7 }}>{ev.localEvento}</span>
-            <span style={{ fontSize: 13, color: COR.azul, fontWeight: 600, whiteSpace: "nowrap" }}>{ev.hora} — {ev.dataEvento}</span>
+            <span style={{ fontWeight: 700, fontSize: 14, color: COR.escuro, textAlign: "left" }}>{ev.nomeEvento}</span>
+            <span style={{ fontSize: 13, color: COR.escuro, opacity: 0.7, textAlign: "center" }}>{ev.localEvento}</span>
+            <span style={{ fontSize: 13, color: COR.azul, fontWeight: 600, textAlign: "right", whiteSpace: "nowrap" }}>{ev.hora} — {ev.dataEvento}</span>
           </button>
         ))}
       </Painel>
@@ -530,7 +549,9 @@ function TelaMeusEventos({ ir, meusEventos }) {
               alignItems: "flex-start",
             }}
           >
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, flexShrink: 0 }} />
+            <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <PartyPopper size={20} color={COR.escuro} />
+            </div>
             <div style={{ flex: 1 }}>
               <p style={{ fontWeight: 700, fontSize: 14, color: COR.escuro, margin: 0 }}>{ev.nomeEvento}</p>
               <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.7, margin: "2px 0" }}>{ev.descricaoEvento}</p>
@@ -563,6 +584,11 @@ function TelaCadastrarEvento({ voltar, acaoCriar }) {
     <div>
       <TopoVerde titulo="Cadastrar Evento" aoVoltar={voltar} />
       <Painel>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: -46, marginBottom: 18 }}>
+          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <PartyPopper size={30} color={COR.branco} />
+          </div>
+        </div>
         <Aviso texto={erro} />
         <Campo label="Nome" value={nome} onChange={setNome} />
         <Campo label="Data" value={data} onChange={setData} placeholder="DD/MM/AAAA" />
@@ -588,7 +614,9 @@ function TelaEditarEvento({ evento, voltar, acaoAtualizar, acaoInativar }) {
       <TopoVerde titulo="Editar Evento" aoVoltar={voltar} />
       <Painel>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -56, marginBottom: 18 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro }} />
+          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <PartyPopper size={30} color={COR.branco} />
+          </div>
           <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{evento.nomeEvento}</p>
         </div>
         <p style={{ fontWeight: 700, fontSize: 15, color: COR.escuro, margin: "0 0 14px" }}>Informações Do Evento</p>
@@ -803,13 +831,15 @@ function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
   );
 }
 
-function TelaTicket({ inscricao, voltar }) {
+function TelaTicket({ inscricao, voltar, acaoCancelar }) {
+  const [cancelado, setCancelado] = useState(false);
+
   return (
     <div>
       <TopoVerde titulo="Seu Ticket" aoVoltar={voltar} />
       <Painel>
         <p style={{ fontWeight: 700, fontSize: 18, color: COR.escuro, textAlign: "center", margin: "4px 0 4px" }}>{inscricao.nomeEvento}</p>
-        <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.7, textAlign: "center", margin: "0 0 24px" }}>
+        <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.7, textAlign: "center", margin: "0 0 20px" }}>
           {inscricao.localEvento} • {inscricao.hora} — {inscricao.dataEvento}
         </p>
 
@@ -821,7 +851,7 @@ function TelaTicket({ inscricao, voltar }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: 16,
+            marginBottom: 20,
           }}
         >
           <QrPlaceholder />
@@ -830,9 +860,32 @@ function TelaTicket({ inscricao, voltar }) {
         <p style={{ fontSize: 11, color: COR.escuro, opacity: 0.5, textAlign: "center", wordBreak: "break-all" }}>
           {inscricao.codigoHashTicket}
         </p>
-        <p style={{ fontSize: 12, color: COR.escuro, opacity: 0.6, textAlign: "center", marginTop: 18 }}>
+        <p style={{ fontSize: 12, color: COR.escuro, opacity: 0.6, textAlign: "center", marginTop: 10, marginBottom: 24 }}>
           Mostre esse QR code pro organizador na entrada do evento.
         </p>
+
+        <p style={{ fontWeight: 700, fontSize: 15, color: COR.escuro, margin: "0 0 12px" }}>Detalhes Do Evento</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+          <LinhaInfo Icone={Calendar} texto={`${inscricao.dataEvento} às ${inscricao.hora}`} />
+          <LinhaInfo Icone={MapPin} texto={inscricao.localEvento} />
+          {inscricao.organizador && <LinhaInfo Icone={UsersIcon} texto={`Organizado por ${inscricao.organizador}`} />}
+        </div>
+        {inscricao.descricaoEvento && <p style={{ fontSize: 14, color: COR.escuro, lineHeight: 1.6, marginBottom: 20 }}>{inscricao.descricaoEvento}</p>}
+
+        {cancelado ? (
+          <Aviso texto="Inscrição cancelada." tipo="ok" />
+        ) : (
+          <div style={{ textAlign: "center", marginTop: 4 }}>
+            <BotaoPerigo
+              onClick={() => {
+                acaoCancelar(inscricao);
+                setCancelado(true);
+              }}
+            >
+              Cancelar Inscrição
+            </BotaoPerigo>
+          </div>
+        )}
       </Painel>
     </div>
   );
@@ -943,6 +996,8 @@ export default function GerenciadorEventosApp() {
         localEvento: evento.localEvento,
         dataEvento: evento.dataEvento,
         hora: evento.hora,
+        descricaoEvento: evento.descricaoEvento,
+        organizador: evento.organizador,
         codigoHashTicket: crypto.randomUUID ? crypto.randomUUID() : String(Math.random()),
       },
     ]);
@@ -990,6 +1045,12 @@ export default function GerenciadorEventosApp() {
     );
   }
 
+  function acaoCancelarMinhaInscricao(inscricao) {
+    // DELETE /inscricao/inativar/{id} (chamado pelo próprio participante, na tela do ticket)
+    setMinhasInscricoes((lista) => lista.filter((i) => i.idInscricao !== inscricao.idInscricao));
+    setEventosExplorar((lista) => lista.map((e) => (e.idEvento === inscricao.idEvento ? { ...e, vagasDisponiveisEvento: e.vagasDisponiveisEvento + 1 } : e)));
+  }
+
   function sair() {
     setLogado(false);
     setPilha([{ nome: "login" }]);
@@ -1027,7 +1088,7 @@ export default function GerenciadorEventosApp() {
   } else if (atual.nome === "minhas-inscricoes") {
     conteudo = <TelaMinhasInscricoes ir={ir} minhasInscricoes={minhasInscricoes} />;
   } else if (atual.nome === "ticket") {
-    conteudo = <TelaTicket inscricao={atual.dados} voltar={voltar} />;
+    conteudo = <TelaTicket inscricao={atual.dados} voltar={voltar} acaoCancelar={acaoCancelarMinhaInscricao} />;
   } else if (atual.nome === "perfil") {
     conteudo = <TelaPerfil sair={sair} />;
   } else {

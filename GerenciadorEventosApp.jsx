@@ -100,8 +100,8 @@ function LogoEventFlow({ size = 64, color }) {
 
 // ---------- componentes de base ----------
 
-function TopoVerde({ titulo, aoVoltar, acaoDireita, alto, comAvatar }) {
-  const padding = alto ? "56px 24px 90px" : comAvatar ? "22px 20px 58px" : "22px 20px 30px";
+function TopoVerde({ titulo, aoVoltar, acaoDireita, alto }) {
+  const padding = alto ? "56px 24px 90px" : "22px 20px 30px";
   return (
     <div style={{ background: COR.verde, padding, position: "relative" }}>
       <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 32 }}>
@@ -459,12 +459,12 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
             <Bell size={18} color={COR.escuro} />
           </button>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 18 }}>
+        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "stretch", gap: 18 }}>
           <button onClick={() => ir("meus-eventos")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "right" }}>
             <p style={{ fontSize: 12, color: COR.escuro, margin: 0, textAlign: "right" }}>Meus Eventos</p>
             <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "right" }}>{meusEventos.length}</p>
           </button>
-          <div style={{ width: 1, alignSelf: "stretch", background: COR.branco }} />
+          <div style={{ width: 1, background: COR.branco }} />
           <button onClick={() => ir("minhas-inscricoes")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "right" }}>
             <p style={{ fontSize: 12, color: COR.escuro, margin: 0, textAlign: "right" }}>Minhas Inscrições</p>
             <p style={{ fontSize: 20, fontWeight: 700, color: COR.azul, margin: 0, textAlign: "right" }}>{minhasInscricoes.length}</p>
@@ -655,9 +655,9 @@ function TelaCadastrarEvento({ voltar, acaoCriar }) {
 
   return (
     <div>
-      <TopoVerde titulo="Cadastrar Evento" aoVoltar={voltar} comAvatar />
+      <TopoVerde titulo="Cadastrar Evento" aoVoltar={voltar} />
       <Painel>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: -32, marginBottom: 18 }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PartyPopper size={30} color={COR.branco} />
           </div>
@@ -684,9 +684,9 @@ function TelaEditarEvento({ evento, voltar, acaoAtualizar, acaoInativar }) {
 
   return (
     <div>
-      <TopoVerde titulo="Editar Evento" aoVoltar={voltar} comAvatar />
+      <TopoVerde titulo="Editar Evento" aoVoltar={voltar} />
       <Painel>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -32, marginBottom: 18 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 18 }}>
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PartyPopper size={30} color={COR.branco} />
           </div>
@@ -777,9 +777,9 @@ function TelaParticipante({ evento, participante, voltar, acaoCancelar }) {
 
   return (
     <div>
-      <TopoVerde titulo="Detalhes Do Usuário" aoVoltar={voltar} comAvatar />
+      <TopoVerde titulo="Detalhes Do Usuário" aoVoltar={voltar} />
       <Painel>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -32, marginBottom: 22 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 22 }}>
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>

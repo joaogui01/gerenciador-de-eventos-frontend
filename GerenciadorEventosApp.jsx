@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Home, BarChart2, Layers, User, ArrowLeft, Plus, Eye, EyeOff,
   MapPin, Calendar, Search, MoreVertical, LogOut, Users as UsersIcon,
-  ScanLine, Ticket as TicketIcon, Bell, PartyPopper,
+  ScanLine, Ticket as TicketIcon, Bell, PartyPopper, Loader,
 } from "lucide-react";
 
 /*
@@ -78,11 +78,32 @@ const minhasInscricoesIniciais = [
   { idInscricao: 501, idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", codigoHashTicket: "a1b2-c3d4-e5f6" },
 ];
 
+// ---------- marca EventFlow ----------
+
+// Aproximação do ícone do Figma (headset dentro de um balão de conversa).
+// Se você tiver o SVG exato exportado do Figma, é só trocar esse componente.
+function LogoEventFlow({ size = 64, color }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 10 H52 a4 4 0 0 1 4 4 V38 a4 4 0 0 1 -4 4 H24 L15 50 V42 H12 a4 4 0 0 1 -4 -4 V14 a4 4 0 0 1 4 -4 Z"
+        stroke={color}
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+      />
+      <path d="M20 29 V25 a12 12 0 0 1 24 0 V29" stroke={color} strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      <rect x="17" y="27" width="7" height="10" rx="3" stroke={color} strokeWidth="2.5" fill="none" />
+      <rect x="40" y="27" width="7" height="10" rx="3" stroke={color} strokeWidth="2.5" fill="none" />
+    </svg>
+  );
+}
+
 // ---------- componentes de base ----------
 
-function TopoVerde({ titulo, aoVoltar, acaoDireita, alto }) {
+function TopoVerde({ titulo, aoVoltar, acaoDireita, alto, comAvatar }) {
+  const padding = alto ? "56px 24px 90px" : comAvatar ? "22px 20px 58px" : "22px 20px 30px";
   return (
-    <div style={{ background: COR.verde, padding: alto ? "56px 24px 90px" : "22px 20px 30px", position: "relative" }}>
+    <div style={{ background: COR.verde, padding, position: "relative" }}>
       <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 32 }}>
         {aoVoltar && (
           <button onClick={aoVoltar} aria-label="Voltar" style={{ ...botaoIcone, position: "absolute", left: 0 }}>
@@ -101,12 +122,14 @@ function Painel({ children, semSubir }) {
     <div
       style={{
         background: COR.fundo,
-        borderTopLeftRadius: 36,
-        borderTopRightRadius: 36,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
         marginTop: semSubir ? 0 : -18,
         padding: "26px 22px 110px",
         minHeight: 420,
         position: "relative",
+        width: "100%",
+        boxSizing: "border-box",
       }}
     >
       {children}
@@ -193,6 +216,27 @@ function BotaoSecundario({ children, onClick }) {
         borderRadius: 999,
         padding: "13px",
         fontSize: 14,
+        fontWeight: 700,
+        cursor: "pointer",
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function BotaoClaro({ children, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        width: "100%",
+        background: COR.verdeClaro,
+        color: COR.escuro,
+        border: "none",
+        borderRadius: 999,
+        padding: "15px",
+        fontSize: 15,
         fontWeight: 700,
         cursor: "pointer",
       }}
@@ -294,7 +338,34 @@ function Aviso({ texto, tipo = "erro" }) {
 
 // ---------- telas ----------
 
-function TelaLogin({ ir, acaoLogin }) {
+function TelaSplash() {
+  return (
+    <div style={{ background: COR.verde, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
+      <LogoEventFlow size={64} color={COR.escuro} />
+      <p style={{ fontSize: 30, fontWeight: 800, color: COR.branco, margin: 0 }}>EventFlow</p>
+      <Loader size={22} color={COR.escuro} className="eventflow-girando" />
+    </div>
+  );
+}
+
+function TelaInicial({ ir }) {
+  return (
+    <div style={{ background: COR.fundo, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 32px", textAlign: "center", boxSizing: "border-box" }}>
+      <LogoEventFlow size={64} color={COR.verde} />
+      <p style={{ fontSize: 34, fontWeight: 800, color: COR.verde, margin: "10px 0 8px" }}>EventFlow</p>
+      <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.75, margin: "0 0 34px", lineHeight: 1.5, maxWidth: 280 }}>
+        O fluxo perfeito do seu evento, do convite ao encerramento.
+      </p>
+      <div style={{ width: "100%", maxWidth: 320 }}>
+        <BotaoPrimario onClick={() => ir("login")}>Conecte-Se</BotaoPrimario>
+        <div style={{ height: 12 }} />
+        <BotaoClaro onClick={() => ir("cadastro")}>Inscrever-Se</BotaoClaro>
+      </div>
+    </div>
+  );
+}
+
+function TelaLogin({ ir, voltar, acaoLogin }) {
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -310,7 +381,7 @@ function TelaLogin({ ir, acaoLogin }) {
 
   return (
     <div>
-      <TopoVerde titulo="Bem-Vindo" alto />
+      <TopoVerde titulo="Bem-Vindo" aoVoltar={voltar} alto />
       <Painel>
         <Aviso texto={erro} />
         <Campo label="Nome De Usuário" value={login} onChange={setLogin} />
@@ -318,7 +389,7 @@ function TelaLogin({ ir, acaoLogin }) {
         <div style={{ height: 20 }} />
         <BotaoPrimario onClick={aoConectar}>Conecte-Se</BotaoPrimario>
         <div style={{ height: 12 }} />
-        <BotaoSecundario onClick={() => ir("cadastro")}>Inscrever-Se</BotaoSecundario>
+        <BotaoClaro onClick={() => ir("cadastro")}>Inscrever-Se</BotaoClaro>
       </Painel>
     </div>
   );
@@ -388,15 +459,15 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
             <Bell size={18} color={COR.escuro} />
           </button>
         </div>
-        <div style={{ display: "flex", justifyContent: "center", gap: 32 }}>
-          <button onClick={() => ir("meus-eventos")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "center" }}>
-            <p style={{ fontSize: 12, color: COR.escuro, margin: 0 }}>Meus Eventos</p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{meusEventos.length}</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 18 }}>
+          <button onClick={() => ir("meus-eventos")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "right" }}>
+            <p style={{ fontSize: 12, color: COR.escuro, margin: 0, textAlign: "right" }}>Meus Eventos</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "right" }}>{meusEventos.length}</p>
           </button>
-          <div style={{ width: 1, background: "rgba(5,34,36,0.3)" }} />
-          <button onClick={() => ir("minhas-inscricoes")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "center" }}>
-            <p style={{ fontSize: 12, color: COR.escuro, margin: 0 }}>Minhas Inscrições</p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: COR.azul, margin: 0, textAlign: "center" }}>{minhasInscricoes.length}</p>
+          <div style={{ width: 1, alignSelf: "stretch", background: COR.branco }} />
+          <button onClick={() => ir("minhas-inscricoes")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "right" }}>
+            <p style={{ fontSize: 12, color: COR.escuro, margin: 0, textAlign: "right" }}>Minhas Inscrições</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: COR.azul, margin: 0, textAlign: "right" }}>{minhasInscricoes.length}</p>
           </button>
         </div>
       </div>
@@ -405,14 +476,16 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
 
         <div
           style={{
-            border: `1.5px solid ${COR.verde}`,
+            background: COR.verde,
             borderRadius: 999,
             padding: "10px 0",
             textAlign: "center",
             marginBottom: 18,
           }}
         >
-          <span style={{ fontSize: 14, fontWeight: 700, color: COR.escuro, textDecoration: "underline", textUnderlineOffset: 4 }}>Explorar Eventos</span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: COR.escuro, textDecoration: "underline", textDecorationColor: COR.branco, textUnderlineOffset: 4 }}>
+            Explorar Eventos
+          </span>
         </div>
 
         <div style={{ background: COR.verdeClaro, borderRadius: 999, padding: "6px", display: "flex", alignItems: "center", marginBottom: 12 }}>
@@ -420,7 +493,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           <input
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            placeholder={`Buscar por ${filtro.toLowerCase()}...`}
+            placeholder={filtro === "Data" ? "Ex: 30/04/2026" : `Buscar por ${filtro.toLowerCase()}...`}
             style={{ flex: 1, border: "none", outline: "none", padding: "8px 10px", fontSize: 13, background: "transparent" }}
           />
         </div>
@@ -582,9 +655,9 @@ function TelaCadastrarEvento({ voltar, acaoCriar }) {
 
   return (
     <div>
-      <TopoVerde titulo="Cadastrar Evento" aoVoltar={voltar} />
+      <TopoVerde titulo="Cadastrar Evento" aoVoltar={voltar} comAvatar />
       <Painel>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: -46, marginBottom: 18 }}>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: -32, marginBottom: 18 }}>
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PartyPopper size={30} color={COR.branco} />
           </div>
@@ -611,9 +684,9 @@ function TelaEditarEvento({ evento, voltar, acaoAtualizar, acaoInativar }) {
 
   return (
     <div>
-      <TopoVerde titulo="Editar Evento" aoVoltar={voltar} />
+      <TopoVerde titulo="Editar Evento" aoVoltar={voltar} comAvatar />
       <Painel>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -56, marginBottom: 18 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -32, marginBottom: 18 }}>
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PartyPopper size={30} color={COR.branco} />
           </div>
@@ -704,9 +777,9 @@ function TelaParticipante({ evento, participante, voltar, acaoCancelar }) {
 
   return (
     <div>
-      <TopoVerde titulo="Detalhes Do Usuário" aoVoltar={voltar} />
+      <TopoVerde titulo="Detalhes Do Usuário" aoVoltar={voltar} comAvatar />
       <Painel>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -56, marginBottom: 22 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -32, marginBottom: 22 }}>
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>
@@ -954,10 +1027,15 @@ function TelaPerfil({ sair }) {
 
 export default function GerenciadorEventosApp() {
   const [logado, setLogado] = useState(false);
-  const [pilha, setPilha] = useState([{ nome: "login" }]);
+  const [pilha, setPilha] = useState([{ nome: "splash" }]);
   const [meusEventos, setMeusEventos] = useState(meusEventosIniciais);
   const [eventosExplorar, setEventosExplorar] = useState(eventosExplorarIniciais);
   const [minhasInscricoes, setMinhasInscricoes] = useState(minhasInscricoesIniciais);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setPilha([{ nome: "inicial" }]), 1400);
+    return () => clearTimeout(timer);
+  }, []);
 
   const atual = pilha[pilha.length - 1];
 
@@ -1053,15 +1131,19 @@ export default function GerenciadorEventosApp() {
 
   function sair() {
     setLogado(false);
-    setPilha([{ nome: "login" }]);
+    setPilha([{ nome: "inicial" }]);
   }
 
   let conteudo;
   if (!logado) {
-    if (atual.nome === "cadastro") {
+    if (atual.nome === "splash") {
+      conteudo = <TelaSplash />;
+    } else if (atual.nome === "cadastro") {
       conteudo = <TelaCadastro voltar={voltar} acaoCadastro={acaoCadastro} />;
+    } else if (atual.nome === "login") {
+      conteudo = <TelaLogin ir={ir} voltar={voltar} acaoLogin={acaoLogin} />;
     } else {
-      conteudo = <TelaLogin ir={ir} acaoLogin={acaoLogin} />;
+      conteudo = <TelaInicial ir={ir} />;
     }
   } else if (atual.nome === "home") {
     conteudo = <TelaHome ir={ir} meusEventos={meusEventos} minhasInscricoes={minhasInscricoes} eventosExplorar={eventosExplorar} />;
@@ -1109,6 +1191,10 @@ export default function GerenciadorEventosApp() {
 
   return (
     <div style={{ maxWidth: 430, margin: "0 auto", minHeight: "100vh", background: COR.fundo, fontFamily: "system-ui, -apple-system, sans-serif", position: "relative", overflowX: "hidden" }}>
+      <style>{`
+        @keyframes eventflow-spin { to { transform: rotate(360deg); } }
+        .eventflow-girando { animation: eventflow-spin 1s linear infinite; transform-origin: center; }
+      `}</style>
       {conteudo}
       {logado && <NavInferior ativo={abaAtiva} aoNavegar={irParaAba} />}
     </div>

@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "lucide-react": "^1.33.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "name": "gerenciador_eventos_frontend",
+  "version": "1.0.0",
+  "description": "Frontend web (mobile-first) do [Gerenciador de Eventos](https://github.com/joaogui01/gerenciador-de-eventos-backend), um app onde cada usuário pode organizar seus próprios eventos e se inscrever em eventos de outras pessoas — tickets são QR codes escaneados pelo organizador na entrada pra confirmar o check-in.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaogui01/gerenciador-de-eventos-frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/joaogui01/gerenciador-de-eventos-frontend/issues"
+  },
+  "homepage": "https://github.com/joaogui01/gerenciador-de-eventos-frontend#readme"
+}

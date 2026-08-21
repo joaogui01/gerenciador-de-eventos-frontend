@@ -118,7 +118,7 @@ function TopoVerde({ titulo, aoVoltar, acaoDireita, alto, paddingInferior }) {
   );
 }
 
-function Painel({ children, semSubir, subida, alturaMinima, semPaddingInferior }) {
+function Painel({ children, semSubir, subida, alturaMinima, semPaddingInferior, preencherTela }) {
   return (
     <div
       style={{
@@ -127,7 +127,8 @@ function Painel({ children, semSubir, subida, alturaMinima, semPaddingInferior }
         borderTopRightRadius: 30,
         marginTop: semSubir ? 0 : subida !== undefined ? subida : -18,
         padding: `26px 22px ${semPaddingInferior ? 26 : 110}px`,
-        minHeight: alturaMinima !== undefined ? alturaMinima : 420,
+        minHeight: preencherTela ? undefined : alturaMinima !== undefined ? alturaMinima : 420,
+        flex: preencherTela ? "1 0 auto" : undefined,
         position: "relative",
         width: "100%",
         boxSizing: "border-box",
@@ -381,9 +382,9 @@ function TelaLogin({ ir, voltar, acaoLogin }) {
   }
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde titulo="Bem-Vindo" aoVoltar={voltar} alto />
-      <Painel>
+      <Painel preencherTela>
         <Aviso texto={erro} />
         <Campo label="Nome De Usuário" value={login} onChange={setLogin} />
         <Campo label="Senha" value={senha} onChange={setSenha} senha mostrarSenha={mostrarSenha} aoAlternarSenha={() => setMostrarSenha((v) => !v)} />
@@ -448,7 +449,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
   });
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <div style={{ background: COR.verde, padding: "22px 24px 40px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 22 }}>
           <p style={{ fontSize: 20, fontWeight: 700, color: COR.escuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta.</p>
@@ -480,7 +481,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           </button>
         </div>
       </div>
-      <Painel semSubir>
+      <Painel semSubir preencherTela>
         {avisoNotificacao && <Aviso texto="Notificações ainda não estão disponíveis nesta versão." tipo="ok" />}
 
         <div
@@ -561,9 +562,9 @@ function TelaEventoExplorar({ evento, voltar, jaInscrito, acaoInscrever }) {
   const [confirmado, setConfirmado] = useState(false);
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde titulo={evento.nomeEvento} aoVoltar={voltar} />
-      <Painel>
+      <Painel preencherTela>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
           <LinhaInfo Icone={Calendar} texto={`${evento.dataEvento} às ${evento.hora}`} />
           <LinhaInfo Icone={MapPin} texto={evento.localEvento} />
@@ -603,7 +604,7 @@ function LinhaInfo({ Icone, texto }) {
 
 function TelaMeusEventos({ ir, meusEventos }) {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde
         titulo="Meus Eventos"
         acaoDireita={
@@ -612,7 +613,7 @@ function TelaMeusEventos({ ir, meusEventos }) {
           </button>
         }
       />
-      <Painel>
+      <Painel preencherTela>
         {meusEventos.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13 }}>Você ainda não criou nenhum evento. Toque no + para começar.</p>}
         {meusEventos.map((ev, i) => (
           <button
@@ -724,7 +725,7 @@ function TelaEditarEvento({ evento, voltar, acaoAtualizar, acaoInativar }) {
 
 function TelaGerenciarEvento({ evento, ir, voltar }) {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde
         titulo={evento.nomeEvento}
         aoVoltar={voltar}
@@ -745,7 +746,7 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
         <p style={{ fontSize: 13, color: COR.escuro, margin: "4px 0" }}><b>Vagas Totais/Disponíveis:</b> {evento.vagasTotaisEvento}/{evento.vagasDisponiveisEvento}</p>
         <p style={{ fontSize: 13, color: COR.escuro, margin: "4px 0" }}><b>Descrição:</b> {evento.descricaoEvento}</p>
       </div>
-      <Painel semSubir>
+      <Painel semSubir preencherTela>
         <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, textAlign: "center", margin: "0 0 18px" }}>Participantes</p>
         {evento.participantes.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13, textAlign: "center" }}>Ninguém se inscreveu neste evento ainda.</p>}
         {evento.participantes.map((p, i) => (
@@ -877,9 +878,9 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
 
 function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde titulo="Minhas Inscrições" />
-      <Painel>
+      <Painel preencherTela>
         {minhasInscricoes.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13 }}>Você ainda não se inscreveu em nenhum evento. Toque em Explorar Eventos na Home.</p>}
         {minhasInscricoes.map((insc, i) => (
           <button
@@ -995,9 +996,9 @@ function QrPlaceholder() {
 
 function TelaPerfil({ sair }) {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde titulo="Perfil" />
-      <Painel>
+      <Painel preencherTela>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -6, marginBottom: 22 }}>
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />

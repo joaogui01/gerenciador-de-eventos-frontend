@@ -21,6 +21,7 @@ import {
 const COR = {
   verde: "#00D09E",
   escuro: "#052224",
+  iconeEscuro: "#0E5C48",
   verdeClaro: "#DFF7E2",
   fundo: "#F1FFF3",
   azul: "#0068FF",
@@ -352,17 +353,22 @@ function TelaSplash() {
 
 function TelaInicial({ ir }) {
   return (
-    <div style={{ background: COR.fundo, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 32px", textAlign: "center", boxSizing: "border-box" }}>
-      <LogoEventFlow size={64} color={COR.verde} />
-      <p style={{ fontSize: 34, fontWeight: 800, color: COR.verde, margin: "10px 0 8px" }}>EventFlow</p>
-      <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.75, margin: "0 0 34px", lineHeight: 1.5, maxWidth: 280 }}>
-        O fluxo perfeito do seu evento, do convite ao encerramento.
-      </p>
-      <div style={{ width: "100%", maxWidth: 320 }}>
-        <BotaoPrimario onClick={() => ir("login")}>Conecte-Se</BotaoPrimario>
-        <div style={{ height: 12 }} />
-        <BotaoClaro onClick={() => ir("cadastro")}>Inscrever-Se</BotaoClaro>
-      </div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <div style={{ background: COR.verde, height: 56 }} />
+      <Painel preencherTela>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", textAlign: "center" }}>
+          <LogoEventFlow size={64} color={COR.verde} />
+          <p style={{ fontSize: 34, fontWeight: 800, color: COR.verde, margin: "10px 0 8px" }}>EventFlow</p>
+          <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.75, margin: "0 0 34px", lineHeight: 1.5, maxWidth: 280 }}>
+            O fluxo perfeito do seu evento, do convite ao encerramento.
+          </p>
+          <div style={{ width: "100%", maxWidth: 320 }}>
+            <BotaoPrimario onClick={() => ir("login")}>Conecte-Se</BotaoPrimario>
+            <div style={{ height: 12 }} />
+            <BotaoClaro onClick={() => ir("cadastro")}>Inscrever-Se</BotaoClaro>
+          </div>
+        </div>
+      </Painel>
     </div>
   );
 }
@@ -668,7 +674,7 @@ function TelaCadastrarEvento({ voltar, acaoCriar }) {
       <TopoVerde titulo="Cadastrar Evento" aoVoltar={voltar} paddingInferior={72} />
       <Painel>
         <div style={{ display: "flex", justifyContent: "center", marginTop: -65, marginBottom: 20 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PartyPopper size={30} color={COR.branco} />
           </div>
         </div>
@@ -697,7 +703,7 @@ function TelaEditarEvento({ evento, voltar, acaoAtualizar, acaoInativar }) {
       <TopoVerde titulo="Editar Evento" aoVoltar={voltar} paddingInferior={72} />
       <Painel>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -65, marginBottom: 18 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PartyPopper size={30} color={COR.branco} />
           </div>
           <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{evento.nomeEvento}</p>
@@ -790,7 +796,7 @@ function TelaParticipante({ evento, participante, voltar, acaoCancelar }) {
       <TopoVerde titulo="Detalhes Do Usuário" aoVoltar={voltar} paddingInferior={72} />
       <Painel>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -65, marginBottom: 22 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>
           <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{participante.nome}</p>
@@ -994,20 +1000,49 @@ function QrPlaceholder() {
   );
 }
 
-function TelaPerfil({ sair }) {
+function TelaPerfil({ sair, ir }) {
+  const [nome, setNome] = useState(usuarioMock.nome);
+  const [login, setLogin] = useState(usuarioMock.login);
+  const [telefone, setTelefone] = useState(usuarioMock.telefone);
+  const [cpf, setCpf] = useState(usuarioMock.cpf);
+  const [salvo, setSalvo] = useState(false);
+
+  function aoAtualizar() {
+    // PUT /usuario/atualizar (endpoint ainda não existe no backend)
+    usuarioMock.nome = nome;
+    usuarioMock.login = login;
+    usuarioMock.telefone = telefone;
+    setSalvo(true);
+  }
+
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <TopoVerde titulo="Perfil" />
+      <TopoVerde titulo="Editar Meu Perfil" paddingInferior={72} />
       <Painel preencherTela>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -6, marginBottom: 22 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.escuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -65, marginBottom: 22 }}>
+          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>
-          <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{usuarioMock.nome}</p>
+          <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{nome}</p>
         </div>
-        <CampoSomenteLeitura label="Nome De Usuário" valor={usuarioMock.login} />
-        <CampoSomenteLeitura label="Telefone" valor={usuarioMock.telefone} />
-        <div style={{ marginTop: 24 }}>
+
+        <p style={{ fontWeight: 700, fontSize: 15, color: COR.escuro, margin: "0 0 14px" }}>Informações Do Usuário</p>
+        {salvo && <Aviso texto="Perfil atualizado." tipo="ok" />}
+        <Campo label="Nome" value={nome} onChange={setNome} />
+        <Campo label="Nome De Usuário" value={login} onChange={setLogin} />
+        <Campo label="Telefone" value={telefone} onChange={setTelefone} />
+        <CampoSomenteLeitura label="CPF" valor={cpf} />
+
+        <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+          <div style={{ flex: 1 }}>
+            <BotaoPrimario onClick={aoAtualizar}>Atualizar Perfil</BotaoPrimario>
+          </div>
+          <div style={{ flex: 1 }}>
+            <BotaoSecundario onClick={() => ir("alterar-senha")}>Editar Senha</BotaoSecundario>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 20 }}>
           <button
             onClick={sair}
             style={{
@@ -1028,6 +1063,56 @@ function TelaPerfil({ sair }) {
             <LogOut size={17} /> Sair
           </button>
         </div>
+      </Painel>
+    </div>
+  );
+}
+
+function TelaAlterarSenha({ voltar }) {
+  const [senhaAtual, setSenhaAtual] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
+  const [confirmar, setConfirmar] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState(false);
+
+  function aoAlterar() {
+    // PUT /usuario/alterar-senha (endpoint ainda não existe no backend)
+    if (!senhaAtual || !novaSenha) {
+      setErro("Preencha a senha atual e a nova senha.");
+      return;
+    }
+    if (novaSenha !== confirmar) {
+      setErro("As senhas não coincidem.");
+      return;
+    }
+    setErro("");
+    setSucesso(true);
+  }
+
+  if (sucesso) {
+    return (
+      <div style={{ background: COR.verde, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, padding: "0 32px", textAlign: "center" }}>
+        <div style={{ width: 74, height: 74, borderRadius: "50%", border: `3px solid ${COR.branco}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 10, height: 10, borderRadius: "50%", background: COR.branco }} />
+        </div>
+        <p style={{ fontSize: 18, fontWeight: 700, color: COR.branco, margin: 0, lineHeight: 1.5 }}>A Senha Foi Alterada Com Sucesso.</p>
+        <div style={{ height: 8 }} />
+        <BotaoClaro onClick={voltar}>Voltar</BotaoClaro>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <TopoVerde titulo="Alterar Senha" aoVoltar={voltar} />
+      <Painel preencherTela>
+        <Aviso texto={erro} />
+        <Campo label="Senha Atual" value={senhaAtual} onChange={setSenhaAtual} senha mostrarSenha={mostrarSenha} aoAlternarSenha={() => setMostrarSenha((v) => !v)} />
+        <Campo label="Nova Senha" value={novaSenha} onChange={setNovaSenha} senha mostrarSenha={mostrarSenha} aoAlternarSenha={() => setMostrarSenha((v) => !v)} />
+        <Campo label="Confirmar Senha" value={confirmar} onChange={setConfirmar} senha mostrarSenha={mostrarSenha} aoAlternarSenha={() => setMostrarSenha((v) => !v)} />
+        <div style={{ height: 8 }} />
+        <BotaoPrimario onClick={aoAlterar}>Alterar Senha</BotaoPrimario>
       </Painel>
     </div>
   );
@@ -1182,7 +1267,9 @@ export default function GerenciadorEventosApp() {
   } else if (atual.nome === "ticket") {
     conteudo = <TelaTicket inscricao={atual.dados} voltar={voltar} acaoCancelar={acaoCancelarMinhaInscricao} />;
   } else if (atual.nome === "perfil") {
-    conteudo = <TelaPerfil sair={sair} />;
+    conteudo = <TelaPerfil sair={sair} ir={ir} />;
+  } else if (atual.nome === "alterar-senha") {
+    conteudo = <TelaAlterarSenha voltar={voltar} />;
   } else {
     conteudo = <TelaHome ir={ir} meusEventos={meusEventos} minhasInscricoes={minhasInscricoes} eventosExplorar={eventosExplorar} />;
   }
@@ -1195,7 +1282,7 @@ export default function GerenciadorEventosApp() {
     ? atual.nome === "evento-explorar"
       ? "home"
       : "minhas-inscricoes"
-    : atual.nome === "perfil"
+    : ["perfil", "alterar-senha"].includes(atual.nome)
     ? "perfil"
     : "";
 

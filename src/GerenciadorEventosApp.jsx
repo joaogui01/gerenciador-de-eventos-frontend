@@ -468,23 +468,27 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           </button>
         </div>
         <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
-          <button 
-            onClick={() => ir("meus-eventos")} 
-            style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", flex: 1, paddingLeft: 20, paddingRight: 0 }}
-          >
-            <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Meus Eventos</p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{meusEventos.length}</p>
-          </button>
+          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            <button
+              onClick={() => ir("meus-eventos")}
+              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
+            >
+              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Meus Eventos</p>
+              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{meusEventos.length}</p>
+            </button>
+          </div>
 
           <div style={{ width: 1, height: 28, background: COR.branco, flexShrink: 0 }} />
 
-          <button 
-            onClick={() => ir("minhas-inscricoes")} 
-            style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", flex: 1, paddingLeft: 30 }}
-          >
-            <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Minhas Inscrições</p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: COR.azul, margin: 0, textAlign: "left" }}>{minhasInscricoes.length}</p>
-          </button>
+          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            <button
+              onClick={() => ir("minhas-inscricoes")}
+              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
+            >
+              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Minhas Inscrições</p>
+              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{minhasInscricoes.length}</p>
+            </button>
+          </div>
         </div>
       </div>
       <Painel semSubir preencherTela>

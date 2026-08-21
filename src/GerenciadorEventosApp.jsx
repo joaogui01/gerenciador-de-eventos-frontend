@@ -1199,7 +1199,7 @@ export default function GerenciadorEventosApp() {
     : "";
 
   return (
-    <div style={{ maxWidth: 430, margin: "0 auto", minHeight: "100vh", background: COR.fundo, fontFamily: "system-ui, -apple-system, sans-serif", position: "relative", overflowX: "hidden" }}>
+    <div style={{ maxWidth: 430, margin: "0 auto", minHeight: "100vh", background: COR.verde, fontFamily: "system-ui, -apple-system, sans-serif", position: "relative", overflowX: "hidden" }}>
       <style>{`
         @keyframes eventflow-spin { to { transform: rotate(360deg); } }
         .eventflow-girando { animation: eventflow-spin 1s linear infinite; transform-origin: center; }

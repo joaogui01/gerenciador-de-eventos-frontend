@@ -1,8 +1,6 @@
 /*
  * Reset global. Sem isso, o navegador aplica margem padrão no <body> (geralmente 8px),
- * criando um "gap" nas bordas da página que não tem nada a ver com o layout do app —
- * e como o fundo padrão do navegador é branco (igual ao fundo dos nossos painéis),
- * fica difícil perceber onde termina a página crua e começa o componente de verdade.
+ * criando um "gap" nas bordas da página que não tem nada a ver com o layout do app.
  */
 * {
   margin: 0;
@@ -17,9 +15,10 @@ body,
 }
 
 body {
-  /* Cor de propósito diferente do fundo dos painéis do app (#F1FFF3), pra ficar
-     visualmente óbvio onde a "moldura do celular" (max-width: 430px) termina e
-     onde começa o resto da página — sem isso, os dois brancos se confundiam. */
-  background: #E4E9E6;
+  /* O verde principal do app (mesmo tom usado no topo de quase toda tela) vira a
+     "base" de tudo — como se o verde do cabeçalho se estendesse até o fim da tela.
+     Onde o painel branco não cobre (cantos arredondados, sobras de altura), aparece
+     esse verde por trás, em vez de uma cor neutra sem relação com o resto do app. */
+  background: #00D09E;
   font-family: system-ui, -apple-system, sans-serif;
 }

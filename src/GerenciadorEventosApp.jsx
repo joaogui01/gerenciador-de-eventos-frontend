@@ -109,10 +109,10 @@ function TopoVerde({ titulo, aoVoltar, acaoDireita, alto, paddingInferior }) {
       <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 32 }}>
         {aoVoltar && (
           <button onClick={aoVoltar} aria-label="Voltar" style={{ ...botaoIcone, position: "absolute", left: 0 }}>
-            <ArrowLeft size={22} color={COR.escuro} />
+            <ArrowLeft size={22} color={COR.iconeEscuro} />
           </button>
         )}
-        {titulo && <h1 style={{ fontSize: alto ? 24 : 18, fontWeight: 700, color: COR.escuro, margin: 0, textAlign: "center", padding: "0 44px" }}>{titulo}</h1>}
+        {titulo && <h1 style={{ fontSize: alto ? 24 : 18, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "center", padding: "0 44px" }}>{titulo}</h1>}
         {acaoDireita && <div style={{ position: "absolute", right: 0 }}>{acaoDireita}</div>}
       </div>
     </div>
@@ -152,7 +152,7 @@ function Campo({ label, value, onChange, placeholder, type = "text", senha, most
   const Elemento = textarea ? "textarea" : "input";
   return (
     <div style={{ marginBottom: 18 }}>
-      <label style={{ fontSize: 13, fontWeight: 600, color: COR.escuro, display: "block", marginBottom: 6 }}>{label}</label>
+      <label style={{ fontSize: 13, fontWeight: 600, color: COR.iconeEscuro, display: "block", marginBottom: 6 }}>{label}</label>
       <div style={{ position: "relative" }}>
         <Elemento
           value={value}
@@ -168,7 +168,7 @@ function Campo({ label, value, onChange, placeholder, type = "text", senha, most
             borderRadius: textarea ? 18 : 999,
             padding: textarea ? "14px 18px" : "14px 18px",
             fontSize: 14,
-            color: COR.escuro,
+            color: COR.iconeEscuro,
             outline: "none",
             fontFamily: "inherit",
             resize: "none",
@@ -176,7 +176,7 @@ function Campo({ label, value, onChange, placeholder, type = "text", senha, most
         />
         {senha && (
           <button onClick={aoAlternarSenha} style={{ ...botaoIcone, position: "absolute", right: 14, top: 12 }} aria-label="Mostrar senha">
-            {mostrarSenha ? <EyeOff size={18} color={COR.escuro} /> : <Eye size={18} color={COR.escuro} />}
+            {mostrarSenha ? <EyeOff size={18} color={COR.iconeEscuro} /> : <Eye size={18} color={COR.iconeEscuro} />}
           </button>
         )}
       </div>
@@ -192,7 +192,7 @@ function BotaoPrimario({ children, onClick, disabled }) {
       style={{
         width: "100%",
         background: disabled ? COR.verdeClaro : COR.verde,
-        color: COR.escuro,
+        color: COR.iconeEscuro,
         border: "none",
         borderRadius: 999,
         padding: "15px",
@@ -214,8 +214,8 @@ function BotaoSecundario({ children, onClick }) {
       style={{
         width: "100%",
         background: "transparent",
-        color: COR.escuro,
-        border: `1.5px solid ${COR.escuro}`,
+        color: COR.iconeEscuro,
+        border: `1.5px solid ${COR.iconeEscuro}`,
         borderRadius: 999,
         padding: "13px",
         fontSize: 14,
@@ -235,7 +235,7 @@ function BotaoClaro({ children, onClick }) {
       style={{
         width: "100%",
         background: COR.verdeClaro,
-        color: COR.escuro,
+        color: COR.iconeEscuro,
         border: "none",
         borderRadius: 999,
         padding: "15px",
@@ -313,7 +313,7 @@ function NavInferior({ ativo, aoNavegar }) {
               cursor: "pointer",
             }}
           >
-            <Icone size={20} color={ativoAgora ? COR.branco : COR.escuro} />
+            <Icone size={20} color={ativoAgora ? COR.branco : COR.iconeEscuro} />
           </button>
         );
       })}
@@ -327,7 +327,7 @@ function Aviso({ texto, tipo = "erro" }) {
     <div
       style={{
         background: tipo === "erro" ? "#FBE4E4" : COR.verdeClaro,
-        color: tipo === "erro" ? "#B33A3A" : COR.escuro,
+        color: tipo === "erro" ? "#B33A3A" : COR.iconeEscuro,
         borderRadius: 14,
         padding: "10px 14px",
         fontSize: 13,
@@ -344,9 +344,9 @@ function Aviso({ texto, tipo = "erro" }) {
 function TelaSplash() {
   return (
     <div style={{ background: COR.verde, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
-      <LogoEventFlow size={64} color={COR.escuro} />
+      <LogoEventFlow size={64} color={COR.iconeEscuro} />
       <p style={{ fontSize: 30, fontWeight: 800, color: COR.branco, margin: 0 }}>EventFlow</p>
-      <Loader size={22} color={COR.escuro} className="eventflow-girando" />
+      <Loader size={22} color={COR.iconeEscuro} className="eventflow-girando" />
     </div>
   );
 }
@@ -359,7 +359,7 @@ function TelaInicial({ ir }) {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", textAlign: "center" }}>
           <LogoEventFlow size={64} color={COR.verde} />
           <p style={{ fontSize: 34, fontWeight: 800, color: COR.verde, margin: "10px 0 8px" }}>EventFlow</p>
-          <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.75, margin: "0 0 34px", lineHeight: 1.5, maxWidth: 280 }}>
+          <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.75, margin: "0 0 34px", lineHeight: 1.5, maxWidth: 280 }}>
             O fluxo perfeito do seu evento, do convite ao encerramento.
           </p>
           <div style={{ width: "100%", maxWidth: 320 }}>
@@ -458,13 +458,13 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <div style={{ background: COR.verde, padding: "22px 24px 40px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 22 }}>
-          <p style={{ fontSize: 20, fontWeight: 700, color: COR.escuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta.</p>
+          <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta.</p>
           <button
             onClick={() => setAvisoNotificacao(true)}
             aria-label="Notificações"
             style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center", flexShrink: 0 }}
           >
-            <Bell size={18} color={COR.escuro} />
+            <Bell size={18} color={COR.iconeEscuro} />
           </button>
         </div>
         <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
@@ -472,7 +472,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
             onClick={() => ir("meus-eventos")} 
             style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", flex: 1, paddingLeft: 20, paddingRight: 0 }}
           >
-            <p style={{ fontSize: 12, color: COR.escuro, margin: 0, textAlign: "left" }}>Meus Eventos</p>
+            <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Meus Eventos</p>
             <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{meusEventos.length}</p>
           </button>
 
@@ -482,7 +482,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
             onClick={() => ir("minhas-inscricoes")} 
             style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", flex: 1, paddingLeft: 30 }}
           >
-            <p style={{ fontSize: 12, color: COR.escuro, margin: 0, textAlign: "left" }}>Minhas Inscrições</p>
+            <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Minhas Inscrições</p>
             <p style={{ fontSize: 20, fontWeight: 700, color: COR.azul, margin: 0, textAlign: "left" }}>{minhasInscricoes.length}</p>
           </button>
         </div>
@@ -499,13 +499,13 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
             marginBottom: 18,
           }}
         >
-          <span style={{ fontSize: 14, fontWeight: 700, color: COR.escuro, textDecoration: "underline", textDecorationColor: COR.branco, textUnderlineOffset: 4 }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: COR.iconeEscuro, textDecoration: "underline", textDecorationColor: COR.branco, textUnderlineOffset: 4 }}>
             Explorar Eventos
           </span>
         </div>
 
         <div style={{ background: COR.verdeClaro, borderRadius: 999, padding: "6px", display: "flex", alignItems: "center", marginBottom: 12 }}>
-          <Search size={18} color={COR.escuro} style={{ marginLeft: 10 }} />
+          <Search size={18} color={COR.iconeEscuro} style={{ marginLeft: 10 }} />
           <input
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
@@ -527,7 +527,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
                 fontWeight: 700,
                 cursor: "pointer",
                 background: filtro === op ? COR.verde : COR.verdeClaro,
-                color: COR.escuro,
+                color: COR.iconeEscuro,
               }}
             >
               {op}
@@ -535,7 +535,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           ))}
         </div>
 
-        {filtrados.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13 }}>Nenhum evento encontrado.</p>}
+        {filtrados.length === 0 && <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>Nenhum evento encontrado.</p>}
 
         {filtrados.map((ev, i) => (
           <button
@@ -554,8 +554,8 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
               gap: 6,
             }}
           >
-            <span style={{ fontWeight: 700, fontSize: 14, color: COR.escuro, textAlign: "left" }}>{ev.nomeEvento}</span>
-            <span style={{ fontSize: 13, color: COR.escuro, opacity: 0.7, textAlign: "center" }}>{ev.localEvento}</span>
+            <span style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, textAlign: "left" }}>{ev.nomeEvento}</span>
+            <span style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, textAlign: "center" }}>{ev.localEvento}</span>
             <span style={{ fontSize: 13, color: COR.azul, fontWeight: 600, textAlign: "right", whiteSpace: "nowrap" }}>{ev.hora} — {ev.dataEvento}</span>
           </button>
         ))}
@@ -576,7 +576,7 @@ function TelaEventoExplorar({ evento, voltar, jaInscrito, acaoInscrever }) {
           <LinhaInfo Icone={MapPin} texto={evento.localEvento} />
           <LinhaInfo Icone={UsersIcon} texto={`${evento.vagasDisponiveisEvento} de ${evento.vagasTotaisEvento} vagas disponíveis`} />
         </div>
-        <p style={{ fontSize: 14, color: COR.escuro, lineHeight: 1.6 }}>{evento.descricaoEvento}</p>
+        <p style={{ fontSize: 14, color: COR.iconeEscuro, lineHeight: 1.6 }}>{evento.descricaoEvento}</p>
 
         {confirmado || jaInscrito ? (
           <Aviso texto="Você já está inscrito neste evento. Confira seu ticket em Minhas Inscrições." tipo="ok" />
@@ -602,8 +602,8 @@ function TelaEventoExplorar({ evento, voltar, jaInscrito, acaoInscrever }) {
 function LinhaInfo({ Icone, texto }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      <Icone size={16} color={COR.escuro} />
-      <span style={{ fontSize: 14, color: COR.escuro }}>{texto}</span>
+      <Icone size={16} color={COR.iconeEscuro} />
+      <span style={{ fontSize: 14, color: COR.iconeEscuro }}>{texto}</span>
     </div>
   );
 }
@@ -615,12 +615,12 @@ function TelaMeusEventos({ ir, meusEventos }) {
         titulo="Meus Eventos"
         acaoDireita={
           <button onClick={() => ir("cadastrar-evento")} aria-label="Criar evento" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
-            <Plus size={20} color={COR.escuro} />
+            <Plus size={20} color={COR.iconeEscuro} />
           </button>
         }
       />
       <Painel preencherTela>
-        {meusEventos.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13 }}>Você ainda não criou nenhum evento. Toque no + para começar.</p>}
+        {meusEventos.length === 0 && <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>Você ainda não criou nenhum evento. Toque no + para começar.</p>}
         {meusEventos.map((ev, i) => (
           <button
             key={ev.idEvento}
@@ -639,11 +639,11 @@ function TelaMeusEventos({ ir, meusEventos }) {
             }}
           >
             <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <PartyPopper size={20} color={COR.escuro} />
+              <PartyPopper size={20} color={COR.iconeEscuro} />
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontWeight: 700, fontSize: 14, color: COR.escuro, margin: 0 }}>{ev.nomeEvento}</p>
-              <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.7, margin: "2px 0" }}>{ev.descricaoEvento}</p>
+              <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{ev.nomeEvento}</p>
+              <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, margin: "2px 0" }}>{ev.descricaoEvento}</p>
               <p style={{ fontSize: 12, color: COR.azul, fontWeight: 600, margin: 0 }}>{ev.hora} — {ev.dataEvento}</p>
             </div>
           </button>
@@ -706,9 +706,9 @@ function TelaEditarEvento({ evento, voltar, acaoAtualizar, acaoInativar }) {
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <PartyPopper size={30} color={COR.branco} />
           </div>
-          <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{evento.nomeEvento}</p>
+          <p style={{ fontWeight: 700, fontSize: 17, color: COR.iconeEscuro, marginTop: 10 }}>{evento.nomeEvento}</p>
         </div>
-        <p style={{ fontWeight: 700, fontSize: 15, color: COR.escuro, margin: "0 0 14px" }}>Informações Do Evento</p>
+        <p style={{ fontWeight: 700, fontSize: 15, color: COR.iconeEscuro, margin: "0 0 14px" }}>Informações Do Evento</p>
         <Campo label="Nome" value={nome} onChange={setNome} />
         <Campo label="Data" value={data} onChange={setData} />
         <Campo label="Local" value={local} onChange={setLocal} />
@@ -738,23 +738,23 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
         acaoDireita={
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={() => ir("leitor-qr", evento)} aria-label="Escanear ticket" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
-              <ScanLine size={18} color={COR.escuro} />
+              <ScanLine size={18} color={COR.iconeEscuro} />
             </button>
             <button onClick={() => ir("editar-evento", evento)} aria-label="Editar evento" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
-              <MoreVertical size={18} color={COR.escuro} />
+              <MoreVertical size={18} color={COR.iconeEscuro} />
             </button>
           </div>
         }
       />
       <div style={{ background: COR.verde, padding: "0 24px 40px", marginTop: -30 }}>
-        <p style={{ fontSize: 13, color: COR.escuro, margin: "4px 0" }}><b>Data:</b> {evento.dataEvento}</p>
-        <p style={{ fontSize: 13, color: COR.escuro, margin: "4px 0" }}><b>Local:</b> {evento.localEvento}</p>
-        <p style={{ fontSize: 13, color: COR.escuro, margin: "4px 0" }}><b>Vagas Totais/Disponíveis:</b> {evento.vagasTotaisEvento}/{evento.vagasDisponiveisEvento}</p>
-        <p style={{ fontSize: 13, color: COR.escuro, margin: "4px 0" }}><b>Descrição:</b> {evento.descricaoEvento}</p>
+        <p style={{ fontSize: 13, color: COR.iconeEscuro, margin: "4px 0" }}><b>Data:</b> {evento.dataEvento}</p>
+        <p style={{ fontSize: 13, color: COR.iconeEscuro, margin: "4px 0" }}><b>Local:</b> {evento.localEvento}</p>
+        <p style={{ fontSize: 13, color: COR.iconeEscuro, margin: "4px 0" }}><b>Vagas Totais/Disponíveis:</b> {evento.vagasTotaisEvento}/{evento.vagasDisponiveisEvento}</p>
+        <p style={{ fontSize: 13, color: COR.iconeEscuro, margin: "4px 0" }}><b>Descrição:</b> {evento.descricaoEvento}</p>
       </div>
       <Painel semSubir preencherTela>
-        <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, textAlign: "center", margin: "0 0 18px" }}>Participantes</p>
-        {evento.participantes.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13, textAlign: "center" }}>Ninguém se inscreveu neste evento ainda.</p>}
+        <p style={{ fontWeight: 700, fontSize: 17, color: COR.iconeEscuro, textAlign: "center", margin: "0 0 18px" }}>Participantes</p>
+        {evento.participantes.length === 0 && <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13, textAlign: "center" }}>Ninguém se inscreveu neste evento ainda.</p>}
         {evento.participantes.map((p, i) => (
           <button
             key={p.idUsuario}
@@ -773,11 +773,11 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
             }}
           >
             <div style={{ width: 36, height: 36, borderRadius: "50%", background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <User size={18} color={COR.escuro} />
+              <User size={18} color={COR.iconeEscuro} />
             </div>
             <div>
-              <p style={{ fontWeight: 700, fontSize: 14, color: COR.escuro, margin: 0 }}>{p.nome}.</p>
-              <p style={{ fontSize: 12, color: p.checkin ? "#1E8E5A" : COR.escuro, opacity: p.checkin ? 1 : 0.6, margin: 0 }}>
+              <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{p.nome}.</p>
+              <p style={{ fontSize: 12, color: p.checkin ? "#1E8E5A" : COR.iconeEscuro, opacity: p.checkin ? 1 : 0.6, margin: 0 }}>
                 {p.checkin ? "Check-in realizado." : "Check-in não realizado."}
               </p>
             </div>
@@ -799,9 +799,9 @@ function TelaParticipante({ evento, participante, voltar, acaoCancelar }) {
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>
-          <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{participante.nome}</p>
+          <p style={{ fontWeight: 700, fontSize: 17, color: COR.iconeEscuro, marginTop: 10 }}>{participante.nome}</p>
         </div>
-        <p style={{ fontWeight: 700, fontSize: 15, color: COR.escuro, margin: "0 0 14px" }}>Informações Do Usuário</p>
+        <p style={{ fontWeight: 700, fontSize: 15, color: COR.iconeEscuro, margin: "0 0 14px" }}>Informações Do Usuário</p>
         <CampoSomenteLeitura label="Nome" valor={`${participante.nome}.`} />
         <CampoSomenteLeitura label="Nome De Usuário" valor={`${participante.login}.`} />
         <CampoSomenteLeitura label="Telefone" valor={`${participante.telefone}.`} />
@@ -828,8 +828,8 @@ function TelaParticipante({ evento, participante, voltar, acaoCancelar }) {
 function CampoSomenteLeitura({ label, valor }) {
   return (
     <div style={{ marginBottom: 16 }}>
-      <p style={{ fontSize: 13, fontWeight: 600, color: COR.escuro, margin: "0 0 6px" }}>{label}</p>
-      <div style={{ background: COR.verdeClaro, borderRadius: 999, padding: "14px 18px", fontSize: 14, color: COR.escuro }}>{valor}</div>
+      <p style={{ fontSize: 13, fontWeight: 600, color: COR.iconeEscuro, margin: "0 0 6px" }}>{label}</p>
+      <div style={{ background: COR.verdeClaro, borderRadius: 999, padding: "14px 18px", fontSize: 14, color: COR.iconeEscuro }}>{valor}</div>
     </div>
   );
 }
@@ -854,7 +854,7 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
       <div style={{ background: COR.verde, padding: "10px 24px 50px" }}>
         <div
           style={{
-            border: `2px solid ${COR.escuro}`,
+            border: `2px solid ${COR.iconeEscuro}`,
             borderRadius: 28,
             aspectRatio: "1 / 1",
             display: "flex",
@@ -863,9 +863,9 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
             margin: "20px 0",
           }}
         >
-          <ScanLine size={40} color={COR.escuro} style={{ opacity: 0.5 }} />
+          <ScanLine size={40} color={COR.iconeEscuro} style={{ opacity: 0.5 }} />
         </div>
-        <p style={{ textAlign: "center", fontSize: 13, color: COR.escuro, opacity: 0.85 }}>
+        <p style={{ textAlign: "center", fontSize: 13, color: COR.iconeEscuro, opacity: 0.85 }}>
           Aponte a câmera para o QR code do ticket do participante.
         </p>
       </div>
@@ -874,7 +874,7 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
         <div style={{ textAlign: "center", marginTop: 8 }}>
           <BotaoPrimario onClick={simularLeitura}>Simular Leitura</BotaoPrimario>
         </div>
-        <p style={{ fontSize: 12, color: COR.escuro, opacity: 0.5, textAlign: "center", marginTop: 14 }}>
+        <p style={{ fontSize: 12, color: COR.iconeEscuro, opacity: 0.5, textAlign: "center", marginTop: 14 }}>
           Protótipo: a leitura real de câmera entra quando conectarmos com o dispositivo.
         </p>
       </Painel>
@@ -887,7 +887,7 @@ function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde titulo="Minhas Inscrições" />
       <Painel preencherTela>
-        {minhasInscricoes.length === 0 && <p style={{ color: COR.escuro, opacity: 0.6, fontSize: 13 }}>Você ainda não se inscreveu em nenhum evento. Toque em Explorar Eventos na Home.</p>}
+        {minhasInscricoes.length === 0 && <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>Você ainda não se inscreveu em nenhum evento. Toque em Explorar Eventos na Home.</p>}
         {minhasInscricoes.map((insc, i) => (
           <button
             key={insc.idInscricao}
@@ -906,11 +906,11 @@ function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
             }}
           >
             <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <TicketIcon size={20} color={COR.escuro} />
+              <TicketIcon size={20} color={COR.iconeEscuro} />
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontWeight: 700, fontSize: 14, color: COR.escuro, margin: 0 }}>{insc.nomeEvento}</p>
-              <p style={{ fontSize: 12, color: COR.escuro, opacity: 0.7, margin: 0 }}>{insc.localEvento}</p>
+              <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{insc.nomeEvento}</p>
+              <p style={{ fontSize: 12, color: COR.iconeEscuro, opacity: 0.7, margin: 0 }}>{insc.localEvento}</p>
             </div>
             <span style={{ fontSize: 12, color: COR.azul, fontWeight: 600 }}>{insc.hora} — {insc.dataEvento}</span>
           </button>
@@ -927,8 +927,8 @@ function TelaTicket({ inscricao, voltar, acaoCancelar }) {
     <div>
       <TopoVerde titulo="Seu Ticket" aoVoltar={voltar} />
       <Painel>
-        <p style={{ fontWeight: 700, fontSize: 18, color: COR.escuro, textAlign: "center", margin: "4px 0 4px" }}>{inscricao.nomeEvento}</p>
-        <p style={{ fontSize: 13, color: COR.escuro, opacity: 0.7, textAlign: "center", margin: "0 0 20px" }}>
+        <p style={{ fontWeight: 700, fontSize: 18, color: COR.iconeEscuro, textAlign: "center", margin: "4px 0 4px" }}>{inscricao.nomeEvento}</p>
+        <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, textAlign: "center", margin: "0 0 20px" }}>
           {inscricao.localEvento} • {inscricao.hora} — {inscricao.dataEvento}
         </p>
 
@@ -946,20 +946,20 @@ function TelaTicket({ inscricao, voltar, acaoCancelar }) {
           <QrPlaceholder />
         </div>
 
-        <p style={{ fontSize: 11, color: COR.escuro, opacity: 0.5, textAlign: "center", wordBreak: "break-all" }}>
+        <p style={{ fontSize: 11, color: COR.iconeEscuro, opacity: 0.5, textAlign: "center", wordBreak: "break-all" }}>
           {inscricao.codigoHashTicket}
         </p>
-        <p style={{ fontSize: 12, color: COR.escuro, opacity: 0.6, textAlign: "center", marginTop: 10, marginBottom: 24 }}>
+        <p style={{ fontSize: 12, color: COR.iconeEscuro, opacity: 0.6, textAlign: "center", marginTop: 10, marginBottom: 24 }}>
           Mostre esse QR code pro organizador na entrada do evento.
         </p>
 
-        <p style={{ fontWeight: 700, fontSize: 15, color: COR.escuro, margin: "0 0 12px" }}>Detalhes Do Evento</p>
+        <p style={{ fontWeight: 700, fontSize: 15, color: COR.iconeEscuro, margin: "0 0 12px" }}>Detalhes Do Evento</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
           <LinhaInfo Icone={Calendar} texto={`${inscricao.dataEvento} às ${inscricao.hora}`} />
           <LinhaInfo Icone={MapPin} texto={inscricao.localEvento} />
           {inscricao.organizador && <LinhaInfo Icone={UsersIcon} texto={`Organizado por ${inscricao.organizador}`} />}
         </div>
-        {inscricao.descricaoEvento && <p style={{ fontSize: 14, color: COR.escuro, lineHeight: 1.6, marginBottom: 20 }}>{inscricao.descricaoEvento}</p>}
+        {inscricao.descricaoEvento && <p style={{ fontSize: 14, color: COR.iconeEscuro, lineHeight: 1.6, marginBottom: 20 }}>{inscricao.descricaoEvento}</p>}
 
         {cancelado ? (
           <Aviso texto="Inscrição cancelada." tipo="ok" />
@@ -994,7 +994,7 @@ function QrPlaceholder() {
   return (
     <div style={{ display: "grid", gridTemplateColumns: `repeat(${linhas}, 1fr)`, gap: 3, width: 176, height: 176 }}>
       {Array.from({ length: linhas * linhas }).map((_, i) => (
-        <div key={i} style={{ background: proximo() ? COR.escuro : "transparent", borderRadius: 1 }} />
+        <div key={i} style={{ background: proximo() ? COR.iconeEscuro : "transparent", borderRadius: 1 }} />
       ))}
     </div>
   );
@@ -1023,10 +1023,10 @@ function TelaPerfil({ sair, ir }) {
           <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>
-          <p style={{ fontWeight: 700, fontSize: 17, color: COR.escuro, marginTop: 10 }}>{nome}</p>
+          <p style={{ fontWeight: 700, fontSize: 17, color: COR.iconeEscuro, marginTop: 10 }}>{nome}</p>
         </div>
 
-        <p style={{ fontWeight: 700, fontSize: 15, color: COR.escuro, margin: "0 0 14px" }}>Informações Do Usuário</p>
+        <p style={{ fontWeight: 700, fontSize: 15, color: COR.iconeEscuro, margin: "0 0 14px" }}>Informações Do Usuário</p>
         {salvo && <Aviso texto="Perfil atualizado." tipo="ok" />}
         <Campo label="Nome" value={nome} onChange={setNome} />
         <Campo label="Nome De Usuário" value={login} onChange={setLogin} />

@@ -3,6 +3,7 @@ import {
   Home, BarChart2, Layers, User, ArrowLeft, Plus, Eye, EyeOff,
   MapPin, Calendar, Search, MoreVertical, LogOut, Users as UsersIcon,
   ScanLine, Ticket as TicketIcon, Bell, PartyPopper, Loader,
+  CheckCircle2, TriangleAlert, Share2,
 } from "lucide-react";
 
 /*
@@ -56,6 +57,7 @@ const meusEventosIniciais = [
     vagasTotaisEvento: 20,
     vagasDisponiveisEvento: 12,
     statusGeral: "ATIVO",
+    encerrado: false,
     participantes: [
       { idUsuario: 11, nome: "Carla", login: "Carla1534", telefone: "+55 89 994556677", checkin: false },
       { idUsuario: 12, nome: "Raimundo", login: "Raimundo22", telefone: "+55 86 991112233", checkin: false },
@@ -71,12 +73,32 @@ const meusEventosIniciais = [
     vagasTotaisEvento: 30,
     vagasDisponiveisEvento: 25,
     statusGeral: "ATIVO",
+    encerrado: false,
     participantes: [],
+  },
+  {
+    idEvento: 103,
+    nomeEvento: "ExpoPatos 2025",
+    descricaoEvento: "Edição do ano passado do evento.",
+    dataEvento: "10/03/2025",
+    hora: "16h",
+    localEvento: "UFPI",
+    vagasTotaisEvento: 15,
+    vagasDisponiveisEvento: 0,
+    statusGeral: "ATIVO",
+    encerrado: true,
+    participantes: [{ idUsuario: 13, nome: "Joana", login: "Joana2020", telefone: "+55 86 990001111", checkin: true }],
   },
 ];
 
 const minhasInscricoesIniciais = [
-  { idInscricao: 501, idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", codigoHashTicket: "a1b2-c3d4-e5f6" },
+  { idInscricao: 501, idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", codigoHashTicket: "a1b2-c3d4-e5f6", encerrado: false },
+  { idInscricao: 502, idEvento: 304, nomeEvento: "ExpoThe 2025", localEvento: "Teresina", dataEvento: "15 de Abril de 2025", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá do ano passado.", organizador: "Marina Chás", codigoHashTicket: "f6e5-d4c3-b2a1", encerrado: true },
+];
+
+const notificacoesMock = [
+  { id: 1, tipo: "participante", titulo: "Novo Integrante No Seu Evento!", texto: "Uma nova pessoa entrou no seu evento. Confira os participantes!", quando: "17h – 24 de Abril" },
+  { id: 2, tipo: "evento", titulo: "Novo Evento Adicionado!", texto: "Um novo evento foi adicionado. Confira os detalhes!", quando: "17h – 24 de Abril" },
 ];
 
 // ---------- marca EventFlow ----------
@@ -339,6 +361,32 @@ function Aviso({ texto, tipo = "erro" }) {
   );
 }
 
+function AbasStatus({ aba, setAba }) {
+  return (
+    <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+      {["Ativos", "Encerrados"].map((op) => (
+        <button
+          key={op}
+          onClick={() => setAba(op)}
+          style={{
+            flex: 1,
+            padding: "10px 0",
+            borderRadius: 999,
+            border: "none",
+            fontSize: 13,
+            fontWeight: 700,
+            cursor: "pointer",
+            background: aba === op ? COR.verde : COR.verdeClaro,
+            color: COR.iconeEscuro,
+          }}
+        >
+          {op}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ---------- telas ----------
 
 function TelaSplash() {
@@ -347,6 +395,52 @@ function TelaSplash() {
       <LogoEventFlow size={64} color={COR.iconeEscuro} />
       <p style={{ fontSize: 30, fontWeight: 800, color: COR.branco, margin: 0 }}>EventFlow</p>
       <Loader size={22} color={COR.iconeEscuro} className="eventflow-girando" />
+    </div>
+  );
+}
+
+const onboardingSlides = [
+  { titulo: "Crie Seus Eventos", texto: "Organize e gerencie seus próprios eventos, do início ao fim, direto pelo celular.", Icone: PartyPopper },
+  { titulo: "Inscreva-se Em Eventos", texto: "Explore eventos de outras pessoas e participe em poucos toques.", Icone: Search },
+  { titulo: "Ticket Vira QR Code", texto: "Mostre seu QR code na entrada e o organizador confirma seu check-in na hora.", Icone: ScanLine },
+];
+
+function TelaOnboarding({ irParaAba }) {
+  const [passo, setPasso] = useState(0);
+  const slide = onboardingSlides[passo];
+  const ultimo = passo === onboardingSlides.length - 1;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <div style={{ background: COR.verde, padding: "20px 24px", display: "flex", justifyContent: "flex-end", height: 56, boxSizing: "border-box" }}>
+        <button onClick={() => irParaAba("inicial")} style={{ background: "none", border: "none", color: COR.iconeEscuro, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+          Pular
+        </button>
+      </div>
+      <Painel preencherTela>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", textAlign: "center" }}>
+          <div style={{ width: 96, height: 96, borderRadius: "50%", background: COR.verdeClaro, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
+            <slide.Icone size={40} color={COR.iconeEscuro} />
+          </div>
+          <p style={{ fontSize: 20, fontWeight: 800, color: COR.iconeEscuro, margin: "0 0 10px" }}>{slide.titulo}</p>
+          <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.75, lineHeight: 1.6, maxWidth: 280, margin: "0 0 30px" }}>{slide.texto}</p>
+
+          <div style={{ display: "flex", gap: 6, marginBottom: 30 }}>
+            {onboardingSlides.map((_, i) => (
+              <div
+                key={i}
+                style={{ width: i === passo ? 20 : 8, height: 8, borderRadius: 999, background: i === passo ? COR.verde : COR.verdeClaro }}
+              />
+            ))}
+          </div>
+
+          <div style={{ width: "100%", maxWidth: 280 }}>
+            <BotaoPrimario onClick={() => (ultimo ? irParaAba("inicial") : setPasso((p) => p + 1))}>
+              {ultimo ? "Começar" : "Próximo"}
+            </BotaoPrimario>
+          </div>
+        </div>
+      </Painel>
     </div>
   );
 }
@@ -394,6 +488,14 @@ function TelaLogin({ ir, voltar, acaoLogin }) {
         <Aviso texto={erro} />
         <Campo label="Nome De Usuário" value={login} onChange={setLogin} />
         <Campo label="Senha" value={senha} onChange={setSenha} senha mostrarSenha={mostrarSenha} aoAlternarSenha={() => setMostrarSenha((v) => !v)} />
+        <div style={{ textAlign: "right", marginTop: -8 }}>
+          <button
+            onClick={() => ir("recuperar-senha")}
+            style={{ background: "none", border: "none", color: COR.azul, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 0 }}
+          >
+            Esqueceu sua senha?
+          </button>
+        </div>
         <div style={{ height: 20 }} />
         <BotaoPrimario onClick={aoConectar}>Conecte-Se</BotaoPrimario>
         <div style={{ height: 12 }} />
@@ -446,7 +548,6 @@ function TelaCadastro({ voltar, acaoCadastro }) {
 function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
   const [filtro, setFiltro] = useState("Data");
   const [busca, setBusca] = useState("");
-  const [avisoNotificacao, setAvisoNotificacao] = useState(false);
 
   const filtrados = eventosExplorar.filter((e) => {
     if (!busca) return true;
@@ -460,7 +561,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 22 }}>
           <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta.</p>
           <button
-            onClick={() => setAvisoNotificacao(true)}
+            onClick={() => ir("notificacoes")}
             aria-label="Notificações"
             style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center", flexShrink: 0 }}
           >
@@ -492,8 +593,6 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
         </div>
       </div>
       <Painel semSubir preencherTela>
-        {avisoNotificacao && <Aviso texto="Notificações ainda não estão disponíveis nesta versão." tipo="ok" />}
-
         <div
           style={{
             background: COR.verde,
@@ -613,6 +712,9 @@ function LinhaInfo({ Icone, texto }) {
 }
 
 function TelaMeusEventos({ ir, meusEventos }) {
+  const [aba, setAba] = useState("Ativos");
+  const filtrados = meusEventos.filter((ev) => (aba === "Ativos" ? !ev.encerrado : ev.encerrado));
+
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde
@@ -624,8 +726,13 @@ function TelaMeusEventos({ ir, meusEventos }) {
         }
       />
       <Painel preencherTela>
-        {meusEventos.length === 0 && <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>Você ainda não criou nenhum evento. Toque no + para começar.</p>}
-        {meusEventos.map((ev, i) => (
+        <AbasStatus aba={aba} setAba={setAba} />
+        {filtrados.length === 0 && (
+          <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>
+            {aba === "Ativos" ? "Você ainda não criou nenhum evento ativo. Toque no + para começar." : "Nenhum evento encerrado ainda."}
+          </p>
+        )}
+        {filtrados.map((ev, i) => (
           <button
             key={ev.idEvento}
             onClick={() => ir("evento-gerenciar", ev)}
@@ -636,10 +743,11 @@ function TelaMeusEventos({ ir, meusEventos }) {
               textAlign: "left",
               cursor: "pointer",
               padding: "14px 0",
-              borderBottom: i < meusEventos.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
+              borderBottom: i < filtrados.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
               display: "flex",
               gap: 14,
               alignItems: "flex-start",
+              opacity: ev.encerrado ? 0.6 : 1,
             }}
           >
             <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -741,6 +849,9 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
         aoVoltar={voltar}
         acaoDireita={
           <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={() => ir("convidar", evento)} aria-label="Convidar participantes" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
+              <Share2 size={18} color={COR.iconeEscuro} />
+            </button>
             <button onClick={() => ir("leitor-qr", evento)} aria-label="Escanear ticket" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
               <ScanLine size={18} color={COR.iconeEscuro} />
             </button>
@@ -849,7 +960,26 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
       return;
     }
     acaoConfirmarCheckin(evento, pendente);
-    setResultado({ ok: true, texto: `Check-in confirmado para ${pendente.nome}.` });
+    setResultado({ ok: true, nome: pendente.nome });
+  }
+
+  if (resultado && resultado.ok) {
+    return (
+      <div style={{ background: COR.verde, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, padding: "0 32px", textAlign: "center" }}>
+        <div style={{ width: 78, height: 78, borderRadius: "50%", border: `3px solid ${COR.branco}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <CheckCircle2 size={40} color={COR.branco} />
+        </div>
+        <p style={{ fontSize: 20, fontWeight: 800, color: COR.branco, margin: 0 }}>Check-in Confirmado!</p>
+        <p style={{ fontSize: 14, color: COR.branco, opacity: 0.9, margin: 0 }}>{resultado.nome}</p>
+        <div style={{ height: 10 }} />
+        <div style={{ width: "100%", maxWidth: 280 }}>
+          <BotaoClaro onClick={() => setResultado(null)}>Escanear Outro</BotaoClaro>
+        </div>
+        <button onClick={voltar} style={{ background: "none", border: "none", color: COR.branco, fontSize: 13, fontWeight: 700, marginTop: 4, cursor: "pointer", textDecoration: "underline" }}>
+          Voltar
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -874,7 +1004,7 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
         </p>
       </div>
       <Painel semSubir>
-        {resultado && <Aviso texto={resultado.texto} tipo={resultado.ok ? "ok" : "erro"} />}
+        {resultado && !resultado.ok && <Aviso texto={resultado.texto} tipo="erro" />}
         <div style={{ textAlign: "center", marginTop: 8 }}>
           <BotaoPrimario onClick={simularLeitura}>Simular Leitura</BotaoPrimario>
         </div>
@@ -887,12 +1017,20 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
 }
 
 function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
+  const [aba, setAba] = useState("Ativos");
+  const filtrados = minhasInscricoes.filter((insc) => (aba === "Ativos" ? !insc.encerrado : insc.encerrado));
+
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopoVerde titulo="Minhas Inscrições" />
       <Painel preencherTela>
-        {minhasInscricoes.length === 0 && <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>Você ainda não se inscreveu em nenhum evento. Toque em Explorar Eventos na Home.</p>}
-        {minhasInscricoes.map((insc, i) => (
+        <AbasStatus aba={aba} setAba={setAba} />
+        {filtrados.length === 0 && (
+          <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>
+            {aba === "Ativos" ? "Você ainda não se inscreveu em nenhum evento. Toque em Explorar Eventos na Home." : "Nenhuma inscrição encerrada ainda."}
+          </p>
+        )}
+        {filtrados.map((insc, i) => (
           <button
             key={insc.idInscricao}
             onClick={() => ir("ticket", insc)}
@@ -903,10 +1041,11 @@ function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
               textAlign: "left",
               cursor: "pointer",
               padding: "14px 0",
-              borderBottom: i < minhasInscricoes.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
+              borderBottom: i < filtrados.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
               display: "flex",
               alignItems: "center",
               gap: 14,
+              opacity: insc.encerrado ? 0.6 : 1,
             }}
           >
             <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -1067,6 +1206,16 @@ function TelaPerfil({ sair, ir }) {
             <LogOut size={17} /> Sair
           </button>
         </div>
+
+        {/* Link só pra você conseguir ver a tela de erro no protótipo — não existe
+            uma condição real de falha ainda, já que tudo aqui é mock. Remover quando
+            conectarmos com a API de verdade (aí sim ela dispara sozinha em falha de fetch). */}
+        <button
+          onClick={() => ir("erro")}
+          style={{ width: "100%", background: "none", border: "none", color: COR.iconeEscuro, opacity: 0.4, fontSize: 11, marginTop: 10, cursor: "pointer" }}
+        >
+          Ver tela de erro (protótipo)
+        </button>
       </Painel>
     </div>
   );
@@ -1122,6 +1271,140 @@ function TelaAlterarSenha({ voltar }) {
   );
 }
 
+function TelaRecuperarSenha({ voltar }) {
+  const [login, setLogin] = useState("");
+  const [erro, setErro] = useState("");
+  const [enviado, setEnviado] = useState(false);
+
+  function aoEnviar() {
+    // POST /usuario/recuperar-senha (endpoint ainda não existe no backend)
+    if (!login) {
+      setErro("Digite seu nome de usuário.");
+      return;
+    }
+    setErro("");
+    setEnviado(true);
+  }
+
+  if (enviado) {
+    return (
+      <div style={{ background: COR.verde, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, padding: "0 32px", textAlign: "center" }}>
+        <div style={{ width: 74, height: 74, borderRadius: "50%", border: `3px solid ${COR.branco}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 10, height: 10, borderRadius: "50%", background: COR.branco }} />
+        </div>
+        <p style={{ fontSize: 15, fontWeight: 700, color: COR.branco, margin: 0, lineHeight: 1.6 }}>
+          Se encontrarmos uma conta com esse nome de usuário, enviaremos instruções para redefinir sua senha.
+        </p>
+        <div style={{ height: 8 }} />
+        <div style={{ width: "100%", maxWidth: 280 }}>
+          <BotaoClaro onClick={voltar}>Voltar Para O Login</BotaoClaro>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <TopoVerde titulo="Recuperar Senha" aoVoltar={voltar} />
+      <Painel preencherTela>
+        <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.75, lineHeight: 1.6, marginBottom: 22 }}>
+          Digite o nome de usuário da sua conta. Se ele existir, enviaremos instruções para você redefinir sua senha.
+        </p>
+        <Aviso texto={erro} />
+        <Campo label="Nome De Usuário" value={login} onChange={setLogin} />
+        <div style={{ height: 8 }} />
+        <BotaoPrimario onClick={aoEnviar}>Enviar</BotaoPrimario>
+      </Painel>
+    </div>
+  );
+}
+
+// Tela genérica de erro — não é acionada em nenhum lugar do protótipo ainda (não há
+// chamadas de API de verdade pra falhar), mas fica pronta pra usar quando conectarmos
+// com o backend: qualquer fetch() que falhar pode renderizar essa tela no lugar do conteúdo normal.
+function TelaErro({ voltar, tentar }) {
+  return (
+    <div style={{ background: COR.fundo, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, padding: "0 32px", textAlign: "center" }}>
+      <div style={{ width: 74, height: 74, borderRadius: "50%", background: COR.verdeClaro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <TriangleAlert size={32} color={COR.iconeEscuro} />
+      </div>
+      <p style={{ fontSize: 18, fontWeight: 800, color: COR.iconeEscuro, margin: 0 }}>Algo Deu Errado</p>
+      <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, lineHeight: 1.6, maxWidth: 280, margin: 0 }}>
+        Não conseguimos completar essa ação. Verifique sua conexão e tente novamente.
+      </p>
+      <div style={{ height: 8 }} />
+      <div style={{ width: "100%", maxWidth: 280 }}>
+        {tentar && (
+          <>
+            <BotaoPrimario onClick={tentar}>Tentar Novamente</BotaoPrimario>
+            <div style={{ height: 10 }} />
+          </>
+        )}
+        <BotaoClaro onClick={voltar}>Voltar Para O Início</BotaoClaro>
+      </div>
+    </div>
+  );
+}
+
+function TelaNotificacoes({ voltar }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <TopoVerde titulo="Notificação" aoVoltar={voltar} />
+      <Painel preencherTela>
+        {notificacoesMock.length === 0 && <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>Nenhuma notificação por enquanto.</p>}
+        {notificacoesMock.map((n, i) => (
+          <div
+            key={n.id}
+            style={{
+              display: "flex",
+              gap: 12,
+              padding: "14px 0",
+              borderBottom: i < notificacoesMock.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
+            }}
+          >
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              {n.tipo === "participante" ? <UsersIcon size={18} color={COR.iconeEscuro} /> : <PartyPopper size={18} color={COR.iconeEscuro} />}
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{n.titulo}</p>
+              <p style={{ fontSize: 12, color: COR.iconeEscuro, opacity: 0.7, margin: "2px 0" }}>{n.texto}</p>
+              <p style={{ fontSize: 11, color: COR.azul, fontWeight: 600, margin: 0 }}>{n.quando}</p>
+            </div>
+          </div>
+        ))}
+      </Painel>
+    </div>
+  );
+}
+
+function TelaConvidar({ evento, voltar }) {
+  const [copiado, setCopiado] = useState(false);
+  const link = `https://eventflow.app/evento/${evento.idEvento}`;
+
+  function aoCopiar() {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(link).catch(() => {});
+    }
+    setCopiado(true);
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <TopoVerde titulo="Convidar Participantes" aoVoltar={voltar} />
+      <Painel preencherTela>
+        <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.75, lineHeight: 1.6, marginBottom: 20 }}>
+          Compartilhe esse link com quem você quiser convidar pro <b>{evento.nomeEvento}</b>. Qualquer pessoa com uma conta pode se inscrever direto por ele.
+        </p>
+        <div style={{ background: COR.verdeClaro, borderRadius: 16, padding: "14px 16px", fontSize: 13, color: COR.iconeEscuro, wordBreak: "break-all", marginBottom: 16 }}>
+          {link}
+        </div>
+        {copiado && <Aviso texto="Link copiado!" tipo="ok" />}
+        <BotaoPrimario onClick={aoCopiar}>Copiar Link</BotaoPrimario>
+      </Painel>
+    </div>
+  );
+}
+
 // ---------- app ----------
 
 export default function GerenciadorEventosApp() {
@@ -1132,7 +1415,7 @@ export default function GerenciadorEventosApp() {
   const [minhasInscricoes, setMinhasInscricoes] = useState(minhasInscricoesIniciais);
 
   useEffect(() => {
-    const timer = setTimeout(() => setPilha([{ nome: "inicial" }]), 1400);
+    const timer = setTimeout(() => setPilha([{ nome: "onboarding" }]), 1400);
     return () => clearTimeout(timer);
   }, []);
 
@@ -1237,10 +1520,14 @@ export default function GerenciadorEventosApp() {
   if (!logado) {
     if (atual.nome === "splash") {
       conteudo = <TelaSplash />;
+    } else if (atual.nome === "onboarding") {
+      conteudo = <TelaOnboarding irParaAba={irParaAba} />;
     } else if (atual.nome === "cadastro") {
       conteudo = <TelaCadastro voltar={voltar} acaoCadastro={acaoCadastro} />;
     } else if (atual.nome === "login") {
       conteudo = <TelaLogin ir={ir} voltar={voltar} acaoLogin={acaoLogin} />;
+    } else if (atual.nome === "recuperar-senha") {
+      conteudo = <TelaRecuperarSenha voltar={voltar} />;
     } else {
       conteudo = <TelaInicial ir={ir} />;
     }
@@ -1274,13 +1561,20 @@ export default function GerenciadorEventosApp() {
     conteudo = <TelaPerfil sair={sair} ir={ir} />;
   } else if (atual.nome === "alterar-senha") {
     conteudo = <TelaAlterarSenha voltar={voltar} />;
+  } else if (atual.nome === "notificacoes") {
+    conteudo = <TelaNotificacoes voltar={voltar} />;
+  } else if (atual.nome === "convidar") {
+    const evento = meusEventos.find((e) => e.idEvento === atual.dados.idEvento) || atual.dados;
+    conteudo = <TelaConvidar evento={evento} voltar={voltar} />;
+  } else if (atual.nome === "erro") {
+    conteudo = <TelaErro voltar={() => irParaAba("home")} />;
   } else {
     conteudo = <TelaHome ir={ir} meusEventos={meusEventos} minhasInscricoes={minhasInscricoes} eventosExplorar={eventosExplorar} />;
   }
 
-  const abaAtiva = ["home"].includes(atual.nome)
+  const abaAtiva = ["home", "notificacoes"].includes(atual.nome)
     ? "home"
-    : ["meus-eventos", "cadastrar-evento", "editar-evento", "evento-gerenciar", "participante", "leitor-qr"].includes(atual.nome)
+    : ["meus-eventos", "cadastrar-evento", "editar-evento", "evento-gerenciar", "participante", "leitor-qr", "convidar"].includes(atual.nome)
     ? "meus-eventos"
     : ["minhas-inscricoes", "ticket", "evento-explorar"].includes(atual.nome)
     ? atual.nome === "evento-explorar"

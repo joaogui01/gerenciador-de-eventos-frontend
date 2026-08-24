@@ -22,3 +22,57 @@ body {
   background: #00D09E;
   font-family: system-ui, -apple-system, sans-serif;
 }
+
+/*
+ * Acabamento visual (sombras, transições, foco). Nada aqui muda estrutura ou remove
+ * nada — só adiciona profundidade e uma sensação de resposta ao toque, coisas que um
+ * design "chapado" (sem sombra nenhuma) geralmente não tem.
+ */
+
+/* Painel branco: sombra bem sutil por trás, pra parecer uma folha "flutuando"
+   sobre o verde, em vez de só uma mudança de cor sem profundidade. */
+.ef-painel {
+  box-shadow: 0 -4px 24px rgba(14, 92, 72, 0.10);
+}
+
+/* Cartões de lista (eventos, participantes, notificações): sombra bem leve,
+   só o suficiente pra separar visualmente do fundo. */
+.ef-card {
+  box-shadow: 0 2px 10px rgba(14, 92, 72, 0.08);
+  transition: box-shadow 0.15s ease, transform 0.1s ease;
+}
+.ef-card:hover {
+  box-shadow: 0 4px 14px rgba(14, 92, 72, 0.14);
+}
+
+/* Botões: sombra + reação ao toque (leve "afundar" quando clicado). */
+.ef-btn {
+  box-shadow: 0 4px 14px rgba(14, 92, 72, 0.18);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+.ef-btn:hover {
+  filter: brightness(0.97);
+}
+.ef-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(14, 92, 72, 0.18);
+}
+
+/* Barra de navegação inferior: sombra pra parecer que "flutua" sobre o conteúdo. */
+.ef-nav {
+  box-shadow: 0 -6px 20px rgba(14, 92, 72, 0.12);
+}
+
+/* Ícones circulares (avatares de evento/usuário): sombra leve pra dar volume. */
+.ef-avatar {
+  box-shadow: 0 6px 16px rgba(14, 92, 72, 0.25);
+}
+
+/* Campos de texto: anel de destaque suave ao focar, como qualquer formulário
+   profissional tem — hoje não existia nenhum feedback visual de foco. */
+.ef-campo {
+  transition: box-shadow 0.15s ease;
+}
+.ef-campo:focus-within {
+  box-shadow: 0 0 0 3px rgba(0, 208, 158, 0.35);
+}

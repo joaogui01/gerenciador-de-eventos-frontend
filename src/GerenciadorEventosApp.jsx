@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
-  Home, BarChart2, Layers, User, ArrowLeft, Plus, Eye, EyeOff,
+  Home, CalendarDays, User, ArrowLeft, Plus, Eye, EyeOff,
   MapPin, Calendar, Search, MoreVertical, LogOut, Users as UsersIcon,
-  ScanLine, Ticket as TicketIcon, Bell, PartyPopper, Loader,
+  ScanLine, Ticket as TicketIcon, Bell, Loader,
   CheckCircle2, TriangleAlert, Share2,
 } from "lucide-react";
 
@@ -31,6 +31,17 @@ const COR = {
 
 // ---------- dados de exemplo ----------
 
+// Formata dígitos digitados no padrão DD/MM/AAAA, inserindo as barras automaticamente
+// conforme a pessoa digita (e ignora qualquer caractere que não seja número).
+function mascararData(valor) {
+  const digitos = valor.replace(/\D/g, "").slice(0, 8);
+  const partes = [];
+  if (digitos.length > 0) partes.push(digitos.slice(0, 2));
+  if (digitos.length > 2) partes.push(digitos.slice(2, 4));
+  if (digitos.length > 4) partes.push(digitos.slice(4, 8));
+  return partes.join("/");
+}
+
 const usuarioMock = {
   idUsuario: 1,
   nome: "Fernando",
@@ -41,9 +52,9 @@ const usuarioMock = {
 };
 
 const eventosExplorarIniciais = [
-  { idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", vagasTotaisEvento: 100, vagasDisponiveisEvento: 42 },
-  { idEvento: 302, nomeEvento: "ExpoThe", localEvento: "Teresina", dataEvento: "15 de Abril", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá, com degustação e workshops.", organizador: "Marina Chás", vagasTotaisEvento: 50, vagasDisponiveisEvento: 9 },
-  { idEvento: 303, nomeEvento: "Feira do Livro", localEvento: "Teresina", dataEvento: "22 de Maio", hora: "9h", descricaoEvento: "Feira literária com lançamentos, bate-papos e sebo colaborativo.", organizador: "Biblioteca Municipal", vagasTotaisEvento: 200, vagasDisponiveisEvento: 180 },
+  { idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30/04/2026", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", vagasTotaisEvento: 100, vagasDisponiveisEvento: 42 },
+  { idEvento: 302, nomeEvento: "ExpoThe", localEvento: "Teresina", dataEvento: "15/04/2026", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá, com degustação e workshops.", organizador: "Marina Chás", vagasTotaisEvento: 50, vagasDisponiveisEvento: 9 },
+  { idEvento: 303, nomeEvento: "Feira do Livro", localEvento: "Teresina", dataEvento: "22/05/2026", hora: "9h", descricaoEvento: "Feira literária com lançamentos, bate-papos e sebo colaborativo.", organizador: "Biblioteca Municipal", vagasTotaisEvento: 200, vagasDisponiveisEvento: 180 },
 ];
 
 const meusEventosIniciais = [
@@ -92,13 +103,13 @@ const meusEventosIniciais = [
 ];
 
 const minhasInscricoesIniciais = [
-  { idInscricao: 501, idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30 de Abril", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", codigoHashTicket: "a1b2-c3d4-e5f6", encerrado: false },
-  { idInscricao: 502, idEvento: 304, nomeEvento: "ExpoThe 2025", localEvento: "Teresina", dataEvento: "15 de Abril de 2025", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá do ano passado.", organizador: "Marina Chás", codigoHashTicket: "f6e5-d4c3-b2a1", encerrado: true },
+  { idInscricao: 501, idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30/04/2026", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", codigoHashTicket: "a1b2-c3d4-e5f6", encerrado: false },
+  { idInscricao: 502, idEvento: 304, nomeEvento: "ExpoThe 2025", localEvento: "Teresina", dataEvento: "15/04/2025", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá do ano passado.", organizador: "Marina Chás", codigoHashTicket: "f6e5-d4c3-b2a1", encerrado: true },
 ];
 
 const notificacoesMock = [
-  { id: 1, tipo: "participante", titulo: "Novo Integrante No Seu Evento!", texto: "Uma nova pessoa entrou no seu evento. Confira os participantes!", quando: "17h – 24 de Abril" },
-  { id: 2, tipo: "evento", titulo: "Novo Evento Adicionado!", texto: "Um novo evento foi adicionado. Confira os detalhes!", quando: "17h – 24 de Abril" },
+  { id: 1, tipo: "participante", titulo: "Novo Integrante No Seu Evento!", texto: "Uma nova pessoa entrou no seu evento. Confira os participantes!", quando: "17h – 24/04/2026" },
+  { id: 2, tipo: "evento", titulo: "Novo Evento Adicionado!", texto: "Um novo evento foi adicionado. Confira os detalhes!", quando: "17h – 24/04/2026" },
 ];
 
 // ---------- marca EventFlow ----------
@@ -144,6 +155,7 @@ function TopoVerde({ titulo, aoVoltar, acaoDireita, alto, paddingInferior }) {
 function Painel({ children, semSubir, subida, alturaMinima, semPaddingInferior, preencherTela }) {
   return (
     <div
+      className="ef-painel"
       style={{
         background: COR.fundo,
         borderTopLeftRadius: 30,
@@ -175,7 +187,7 @@ function Campo({ label, value, onChange, placeholder, type = "text", senha, most
   return (
     <div style={{ marginBottom: 18 }}>
       <label style={{ fontSize: 13, fontWeight: 600, color: COR.iconeEscuro, display: "block", marginBottom: 6 }}>{label}</label>
-      <div style={{ position: "relative" }}>
+      <div className="ef-campo" style={{ position: "relative", borderRadius: textarea ? 18 : 999 }}>
         <Elemento
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -211,6 +223,7 @@ function BotaoPrimario({ children, onClick, disabled }) {
     <button
       onClick={onClick}
       disabled={disabled}
+      className={disabled ? "" : "ef-btn"}
       style={{
         width: "100%",
         background: disabled ? COR.verdeClaro : COR.verde,
@@ -233,6 +246,7 @@ function BotaoSecundario({ children, onClick }) {
   return (
     <button
       onClick={onClick}
+      className="ef-btn"
       style={{
         width: "100%",
         background: "transparent",
@@ -254,6 +268,7 @@ function BotaoClaro({ children, onClick }) {
   return (
     <button
       onClick={onClick}
+      className="ef-btn"
       style={{
         width: "100%",
         background: COR.verdeClaro,
@@ -294,12 +309,13 @@ function BotaoPerigo({ children, onClick }) {
 function NavInferior({ ativo, aoNavegar }) {
   const itens = [
     { chave: "home", Icone: Home },
-    { chave: "meus-eventos", Icone: BarChart2 },
-    { chave: "minhas-inscricoes", Icone: Layers },
+    { chave: "meus-eventos", Icone: CalendarDays },
+    { chave: "minhas-inscricoes", Icone: TicketIcon },
     { chave: "perfil", Icone: User },
   ];
   return (
     <div
+      className="ef-nav"
       style={{
         position: "fixed",
         bottom: 0,
@@ -400,7 +416,7 @@ function TelaSplash() {
 }
 
 const onboardingSlides = [
-  { titulo: "Crie Seus Eventos", texto: "Organize e gerencie seus próprios eventos, do início ao fim, direto pelo celular.", Icone: PartyPopper },
+  { titulo: "Crie Seus Eventos", texto: "Organize e gerencie seus próprios eventos, do início ao fim, direto pelo celular.", Icone: CalendarDays },
   { titulo: "Inscreva-se Em Eventos", texto: "Explore eventos de outras pessoas e participe em poucos toques.", Icone: Search },
   { titulo: "Ticket Vira QR Code", texto: "Mostre seu QR code na entrada e o organizador confirma seu check-in na hora.", Icone: ScanLine },
 ];
@@ -559,7 +575,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <div style={{ background: COR.verde, padding: "22px 24px 40px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 22 }}>
-          <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta.</p>
+          <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta</p>
           <button
             onClick={() => ir("notificacoes")}
             aria-label="Notificações"
@@ -574,7 +590,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
               onClick={() => ir("meus-eventos")}
               style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
             >
-              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Meus Eventos</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Meus Eventos</p>
               <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{meusEventos.length}</p>
             </button>
           </div>
@@ -586,7 +602,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
               onClick={() => ir("minhas-inscricoes")}
               style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
             >
-              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Minhas Inscrições</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Minhas Inscrições</p>
               <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{minhasInscricoes.length}</p>
             </button>
           </div>
@@ -611,8 +627,8 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           <Search size={18} color={COR.iconeEscuro} style={{ marginLeft: 10 }} />
           <input
             value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-            placeholder={filtro === "Data" ? "Ex: 30/04/2026" : `Buscar por ${filtro.toLowerCase()}...`}
+            onChange={(e) => setBusca(filtro === "Data" ? mascararData(e.target.value) : e.target.value)}
+            placeholder={filtro === "Data" ? "30/04/2026..." : `Buscar por ${filtro.toLowerCase()}...`}
             style={{ flex: 1, border: "none", outline: "none", padding: "8px 10px", fontSize: 13, background: "transparent" }}
           />
         </div>
@@ -750,8 +766,8 @@ function TelaMeusEventos({ ir, meusEventos }) {
               opacity: ev.encerrado ? 0.6 : 1,
             }}
           >
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <PartyPopper size={20} color={COR.iconeEscuro} />
+            <div className="ef-avatar" style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <CalendarDays size={20} color={COR.iconeEscuro} />
             </div>
             <div style={{ flex: 1 }}>
               <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{ev.nomeEvento}</p>
@@ -786,8 +802,8 @@ function TelaCadastrarEvento({ voltar, acaoCriar }) {
       <TopoVerde titulo="Cadastrar Evento" aoVoltar={voltar} paddingInferior={72} />
       <Painel>
         <div style={{ display: "flex", justifyContent: "center", marginTop: -65, marginBottom: 20 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <PartyPopper size={30} color={COR.branco} />
+          <div className="ef-avatar" style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <CalendarDays size={30} color={COR.branco} />
           </div>
         </div>
         <Aviso texto={erro} />
@@ -815,8 +831,8 @@ function TelaEditarEvento({ evento, voltar, acaoAtualizar, acaoInativar }) {
       <TopoVerde titulo="Editar Evento" aoVoltar={voltar} paddingInferior={72} />
       <Painel>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -65, marginBottom: 18 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <PartyPopper size={30} color={COR.branco} />
+          <div className="ef-avatar" style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <CalendarDays size={30} color={COR.branco} />
           </div>
           <p style={{ fontWeight: 700, fontSize: 17, color: COR.iconeEscuro, marginTop: 10 }}>{evento.nomeEvento}</p>
         </div>
@@ -887,7 +903,7 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
               gap: 12,
             }}
           >
-            <div style={{ width: 36, height: 36, borderRadius: "50%", background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <div className="ef-avatar" style={{ width: 36, height: 36, borderRadius: "50%", background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <User size={18} color={COR.iconeEscuro} />
             </div>
             <div>
@@ -911,7 +927,7 @@ function TelaParticipante({ evento, participante, voltar, acaoCancelar }) {
       <TopoVerde titulo="Detalhes Do Usuário" aoVoltar={voltar} paddingInferior={72} />
       <Painel>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -65, marginBottom: 22 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="ef-avatar" style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>
           <p style={{ fontWeight: 700, fontSize: 17, color: COR.iconeEscuro, marginTop: 10 }}>{participante.nome}</p>
@@ -1048,7 +1064,7 @@ function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
               opacity: insc.encerrado ? 0.6 : 1,
             }}
           >
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <div className="ef-avatar" style={{ width: 42, height: 42, borderRadius: 12, background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <TicketIcon size={20} color={COR.iconeEscuro} />
             </div>
             <div style={{ flex: 1 }}>
@@ -1163,7 +1179,7 @@ function TelaPerfil({ sair, ir }) {
       <TopoVerde titulo="Editar Meu Perfil" paddingInferior={72} />
       <Painel preencherTela>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: -65, marginBottom: 22 }}>
-          <div style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="ef-avatar" style={{ width: 78, height: 78, borderRadius: "50%", background: COR.iconeEscuro, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <User size={34} color={COR.branco} />
           </div>
           <p style={{ fontWeight: 700, fontSize: 17, color: COR.iconeEscuro, marginTop: 10 }}>{nome}</p>
@@ -1362,8 +1378,8 @@ function TelaNotificacoes({ voltar }) {
               borderBottom: i < notificacoesMock.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
             }}
           >
-            <div style={{ width: 38, height: 38, borderRadius: 10, background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              {n.tipo === "participante" ? <UsersIcon size={18} color={COR.iconeEscuro} /> : <PartyPopper size={18} color={COR.iconeEscuro} />}
+            <div className="ef-avatar" style={{ width: 38, height: 38, borderRadius: 10, background: COR.verde, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              {n.tipo === "participante" ? <UsersIcon size={18} color={COR.iconeEscuro} /> : <CalendarDays size={18} color={COR.iconeEscuro} />}
             </div>
             <div style={{ flex: 1 }}>
               <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{n.titulo}</p>

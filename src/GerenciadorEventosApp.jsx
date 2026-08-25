@@ -161,7 +161,7 @@ function Painel({ children, semSubir, subida, alturaMinima, semPaddingInferior, 
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         marginTop: semSubir ? 0 : subida !== undefined ? subida : -18,
-        padding: `26px 22px ${semPaddingInferior ? 26 : 110}px`,
+        padding: `26px 20px ${semPaddingInferior ? 26 : 110}px`,
         minHeight: preencherTela ? undefined : alturaMinima !== undefined ? alturaMinima : 420,
         flex: preencherTela ? "1 0 auto" : undefined,
         position: "relative",
@@ -428,7 +428,7 @@ function TelaOnboarding({ irParaAba }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <div style={{ background: COR.verde, padding: "20px 24px", display: "flex", justifyContent: "flex-end", height: 56, boxSizing: "border-box" }}>
+      <div style={{ background: COR.verde, padding: "20px 20px", display: "flex", justifyContent: "flex-end", height: 56, boxSizing: "border-box" }}>
         <button onClick={() => irParaAba("inicial")} style={{ background: "none", border: "none", color: COR.iconeEscuro, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
           Pular
         </button>
@@ -573,9 +573,9 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <div style={{ background: COR.verde, padding: "22px 24px 40px" }}>
+      <div style={{ background: COR.verde, padding: "22px 20px 40px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 22 }}>
-          <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, maxWidth: 260 }}>Olá, Bem-Vindo De Volta</p>
+          <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, maxWidth: 260 }}>Olá, {usuarioMock.nome}</p>
           <button
             onClick={() => ir("notificacoes")}
             aria-label="Notificações"
@@ -588,10 +588,10 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
             <button
               onClick={() => ir("meus-eventos")}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
+              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
             >
-              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Meus Eventos</p>
-              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{meusEventos.length}</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Meus Eventos</p>
+              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{meusEventos.length}</p>
             </button>
           </div>
 
@@ -600,10 +600,10 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
             <button
               onClick={() => ir("minhas-inscricoes")}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
+              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
             >
-              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "left" }}>Minhas Inscrições</p>
-              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "left" }}>{minhasInscricoes.length}</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Minhas Inscrições</p>
+              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{minhasInscricoes.length}</p>
             </button>
           </div>
         </div>
@@ -877,7 +877,7 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
           </div>
         }
       />
-      <div style={{ background: COR.verde, padding: "0 24px 40px", marginTop: -30 }}>
+      <div style={{ background: COR.verde, padding: "0 20px 40px", marginTop: -30 }}>
         <p style={{ fontSize: 13, color: COR.iconeEscuro, margin: "4px 0" }}><b>Data:</b> {evento.dataEvento}</p>
         <p style={{ fontSize: 13, color: COR.iconeEscuro, margin: "4px 0" }}><b>Local:</b> {evento.localEvento}</p>
         <p style={{ fontSize: 13, color: COR.iconeEscuro, margin: "4px 0" }}><b>Vagas Totais/Disponíveis:</b> {evento.vagasTotaisEvento}/{evento.vagasDisponiveisEvento}</p>
@@ -1001,7 +1001,7 @@ function TelaLeitorQR({ evento, voltar, acaoConfirmarCheckin }) {
   return (
     <div>
       <TopoVerde titulo="Leitor De QR Code" aoVoltar={voltar} />
-      <div style={{ background: COR.verde, padding: "10px 24px 50px" }}>
+      <div style={{ background: COR.verde, padding: "10px 20px 50px" }}>
         <div
           style={{
             border: `2px solid ${COR.iconeEscuro}`,

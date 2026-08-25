@@ -14,6 +14,16 @@ body,
   height: 100%;
 }
 
+html {
+  /* Sem isso, a barra de rolagem só aparece em telas com conteúdo mais alto que a
+     janela. Como a coluna do app é centralizada (margin: 0 auto), a presença ou
+     ausência da barra desloca ligeiramente esse centro — e como isso varia de tela
+     pra tela (uma tem mais conteúdo que a outra), dá um "pulo" visual perceptível
+     bem no momento da troca. Reservar esse espaço sempre, mesmo quando não precisa
+     rolar, mantém o centro fixo em qualquer tela. */
+  scrollbar-gutter: stable;
+}
+
 body {
   /* O verde principal do app (mesmo tom usado no topo de quase toda tela) vira a
      "base" de tudo — como se o verde do cabeçalho se estendesse até o fim da tela.

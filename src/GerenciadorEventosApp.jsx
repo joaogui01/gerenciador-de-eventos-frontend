@@ -590,7 +590,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
               onClick={() => ir("meus-eventos")}
               style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
             >
-              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Meus Eventos</p>
+              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Meus Eventos</p>
               <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{meusEventos.length}</p>
             </button>
           </div>
@@ -602,7 +602,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
               onClick={() => ir("minhas-inscricoes")}
               style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
             >
-              <p style={{ fontSize: 12, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Minhas Inscrições</p>
+              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Minhas Inscrições</p>
               <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{minhasInscricoes.length}</p>
             </button>
           </div>

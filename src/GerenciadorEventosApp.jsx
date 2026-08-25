@@ -52,9 +52,9 @@ const usuarioMock = {
 };
 
 const eventosExplorarIniciais = [
-  { idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30/04/2026", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", vagasTotaisEvento: 100, vagasDisponiveisEvento: 42 },
-  { idEvento: 302, nomeEvento: "ExpoThe", localEvento: "Teresina", dataEvento: "15/04/2026", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá, com degustação e workshops.", organizador: "Marina Chás", vagasTotaisEvento: 50, vagasDisponiveisEvento: 9 },
-  { idEvento: 303, nomeEvento: "Feira do Livro", localEvento: "Teresina", dataEvento: "22/05/2026", hora: "9h", descricaoEvento: "Feira literária com lançamentos, bate-papos e sebo colaborativo.", organizador: "Biblioteca Municipal", vagasTotaisEvento: 200, vagasDisponiveisEvento: 180 },
+  { idEvento: 301, nomeEvento: "ExpoFest", localEvento: "Paulistana", dataEvento: "30/04/2026", hora: "21h", descricaoEvento: "Feira de exposições da cidade, com barracas, música ao vivo e artesanato local.", organizador: "Coletivo ExpoFest", vagasTotaisEvento: 100, vagasDisponiveisEvento: 42, statusGeral: "ATIVO", encerrado: false, participantes: [] },
+  { idEvento: 302, nomeEvento: "ExpoThe", localEvento: "Teresina", dataEvento: "15/04/2026", hora: "8h30", descricaoEvento: "Encontro de apreciadores de chá, com degustação e workshops.", organizador: "Marina Chás", vagasTotaisEvento: 50, vagasDisponiveisEvento: 9, statusGeral: "ATIVO", encerrado: false, participantes: [] },
+  { idEvento: 303, nomeEvento: "Feira do Livro", localEvento: "Teresina", dataEvento: "22/05/2026", hora: "9h", descricaoEvento: "Feira literária com lançamentos, bate-papos e sebo colaborativo.", organizador: "Biblioteca Municipal", vagasTotaisEvento: 200, vagasDisponiveisEvento: 180, statusGeral: "ATIVO", encerrado: false, participantes: [] },
 ];
 
 const meusEventosIniciais = [
@@ -65,6 +65,7 @@ const meusEventosIniciais = [
     dataEvento: "24/04/2026",
     hora: "17h",
     localEvento: "UFPI",
+    organizador: usuarioMock.nome,
     vagasTotaisEvento: 20,
     vagasDisponiveisEvento: 12,
     statusGeral: "ATIVO",
@@ -81,6 +82,7 @@ const meusEventosIniciais = [
     dataEvento: "24/04/2026",
     hora: "17h",
     localEvento: "Santos",
+    organizador: usuarioMock.nome,
     vagasTotaisEvento: 30,
     vagasDisponiveisEvento: 25,
     statusGeral: "ATIVO",
@@ -94,12 +96,22 @@ const meusEventosIniciais = [
     dataEvento: "10/03/2025",
     hora: "16h",
     localEvento: "UFPI",
+    organizador: usuarioMock.nome,
     vagasTotaisEvento: 15,
     vagasDisponiveisEvento: 0,
     statusGeral: "ATIVO",
     encerrado: true,
     participantes: [{ idUsuario: 13, nome: "Joana", login: "Joana2020", telefone: "+55 86 990001111", checkin: true }],
   },
+];
+
+// Lista "de verdade" com todo evento que existe no sistema — junta os que o usuário
+// mock organiza (meusEventosIniciais) com os de outras pessoas (eventosExplorarIniciais).
+// É o que o ADMIN enxerga na íntegra; o usuário comum vê só o subconjunto onde ele é
+// o organizador (ver o filtro em torno de "meusEventos" dentro do componente principal).
+const todosEventosIniciais = [
+  ...meusEventosIniciais,
+  ...eventosExplorarIniciais.map((e) => ({ ...e, statusGeral: "ATIVO", encerrado: false, participantes: [] })),
 ];
 
 const minhasInscricoesIniciais = [
@@ -727,9 +739,19 @@ function LinhaInfo({ Icone, texto }) {
   );
 }
 
-function TelaMeusEventos({ ir, meusEventos }) {
+function TelaMeusEventos({ ir, meusEventos, eventosExplorar, perfilAtual }) {
   const [aba, setAba] = useState("Ativos");
-  const filtrados = meusEventos.filter((ev) => (aba === "Ativos" ? !ev.encerrado : ev.encerrado));
+
+  // No modo ADMIN, "Meus Eventos" mostra todo evento do sistema, não só os que o
+  // usuário logado organizou — é exatamente o que o backend já permite (ADMIN ignora
+  // a checagem de dono nos endpoints de evento). Junta as duas listas mock e remove
+  // duplicata (um evento pode aparecer nas duas se o próprio admin também o organizou).
+  const listaBase =
+    perfilAtual === "ADMIN"
+      ? [...meusEventos, ...eventosExplorar.filter((e) => !meusEventos.some((m) => m.idEvento === e.idEvento))]
+      : meusEventos;
+
+  const filtrados = listaBase.filter((ev) => (aba === "Ativos" ? !ev.encerrado : ev.encerrado));
 
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -742,6 +764,11 @@ function TelaMeusEventos({ ir, meusEventos }) {
         }
       />
       <Painel preencherTela>
+        {perfilAtual === "ADMIN" && (
+          <div style={{ display: "inline-block", background: COR.iconeEscuro, color: COR.branco, fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 999, marginBottom: 14 }}>
+            Modo Administrador — exibindo eventos de todos os organizadores
+          </div>
+        )}
         <AbasStatus aba={aba} setAba={setAba} />
         {filtrados.length === 0 && (
           <p style={{ color: COR.iconeEscuro, opacity: 0.6, fontSize: 13 }}>
@@ -772,6 +799,9 @@ function TelaMeusEventos({ ir, meusEventos }) {
             <div style={{ flex: 1 }}>
               <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{ev.nomeEvento}</p>
               <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, margin: "2px 0" }}>{ev.descricaoEvento}</p>
+              {perfilAtual === "ADMIN" && ev.organizador && ev.organizador !== usuarioMock.nome && (
+                <p style={{ fontSize: 11, color: COR.iconeEscuro, opacity: 0.55, margin: "0 0 2px" }}>Organizado por {ev.organizador}</p>
+              )}
               <p style={{ fontSize: 12, color: COR.azul, fontWeight: 600, margin: 0 }}>{ev.hora} — {ev.dataEvento}</p>
             </div>
           </button>
@@ -1159,7 +1189,7 @@ function QrPlaceholder() {
   );
 }
 
-function TelaPerfil({ sair, ir }) {
+function TelaPerfil({ sair, ir, perfilAtual, setPerfilAtual }) {
   const [nome, setNome] = useState(usuarioMock.nome);
   const [login, setLogin] = useState(usuarioMock.login);
   const [telefone, setTelefone] = useState(usuarioMock.telefone);
@@ -1198,6 +1228,37 @@ function TelaPerfil({ sair, ir }) {
           </div>
           <div style={{ flex: 1 }}>
             <BotaoSecundario onClick={() => ir("alterar-senha")}>Editar Senha</BotaoSecundario>
+          </div>
+        </div>
+
+        {/* Isso não existe num app de verdade — lá o perfil (ADMIN/USER) vem do próprio
+            token JWT de quem fez login, ninguém escolhe. É só um controle de demonstração
+            pra você conseguir ver as duas experiências (usuário comum e administrador)
+            sem precisar simular dois logins diferentes. Remover quando conectar a API real. */}
+        <div style={{ marginTop: 26, paddingTop: 18, borderTop: "1px solid rgba(5,34,36,0.12)" }}>
+          <p style={{ fontSize: 11, color: COR.iconeEscuro, opacity: 0.55, margin: "0 0 8px" }}>
+            Simular perfil (protótipo) — num app real isso vem do login, não é uma escolha
+          </p>
+          <div style={{ display: "flex", gap: 8 }}>
+            {["USER", "ADMIN"].map((p) => (
+              <button
+                key={p}
+                onClick={() => setPerfilAtual(p)}
+                style={{
+                  flex: 1,
+                  padding: "10px 0",
+                  borderRadius: 999,
+                  border: "none",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  background: perfilAtual === p ? COR.verde : COR.verdeClaro,
+                  color: COR.iconeEscuro,
+                }}
+              >
+                {p === "USER" ? "Usuário" : "Administrador"}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -1425,6 +1486,10 @@ function TelaConvidar({ evento, voltar }) {
 
 export default function GerenciadorEventosApp() {
   const [logado, setLogado] = useState(false);
+  // Simula o campo "perfil" do backend (Usuario.perfil: ADMIN ou USER). Num login de
+  // verdade isso viria do token JWT — aqui é só um controle de demonstração, trocável
+  // na tela de Perfil, pra dar pra ver as duas experiências sem precisar de dois logins.
+  const [perfilAtual, setPerfilAtual] = useState("USER");
   const [pilha, setPilha] = useState([{ nome: "splash" }]);
   const [meusEventos, setMeusEventos] = useState(meusEventosIniciais);
   const [eventosExplorar, setEventosExplorar] = useState(eventosExplorarIniciais);
@@ -1489,6 +1554,7 @@ export default function GerenciadorEventosApp() {
   function acaoAtualizarEvento(evento, dados) {
     // PUT /evento/atualizar { idEvento, ... }
     setMeusEventos((lista) => lista.map((e) => (e.idEvento === evento.idEvento ? { ...e, ...dados } : e)));
+    setEventosExplorar((lista) => lista.map((e) => (e.idEvento === evento.idEvento ? { ...e, ...dados } : e)));
     voltar();
     voltar();
   }
@@ -1496,11 +1562,12 @@ export default function GerenciadorEventosApp() {
   function acaoInativarEvento(evento) {
     // DELETE /evento/inativar/{id}
     setMeusEventos((lista) => lista.map((e) => (e.idEvento === evento.idEvento ? { ...e, statusGeral: "INATIVO" } : e)));
+    setEventosExplorar((lista) => lista.map((e) => (e.idEvento === evento.idEvento ? { ...e, statusGeral: "INATIVO" } : e)));
     irParaAba("meus-eventos");
   }
 
   function acaoCancelarInscricao(evento, participante) {
-    // DELETE /inscricao/inativar/{id} (chamado pelo organizador do evento)
+    // DELETE /inscricao/inativar/{id} (chamado pelo organizador do evento, ou por um ADMIN em qualquer evento)
     setMeusEventos((lista) =>
       lista.map((e) =>
         e.idEvento === evento.idEvento
@@ -1508,6 +1575,7 @@ export default function GerenciadorEventosApp() {
           : e
       )
     );
+    setEventosExplorar((lista) => lista.map((e) => (e.idEvento === evento.idEvento ? { ...e, vagasDisponiveisEvento: e.vagasDisponiveisEvento + 1 } : e)));
   }
 
   function acaoConfirmarCheckin(evento, participante) {
@@ -1554,7 +1622,7 @@ export default function GerenciadorEventosApp() {
     const inscrito = minhasInscricoes.some((i) => i.idEvento === evento.idEvento);
     conteudo = <TelaEventoExplorar evento={evento} voltar={voltar} jaInscrito={inscrito} acaoInscrever={acaoInscrever} />;
   } else if (atual.nome === "meus-eventos") {
-    conteudo = <TelaMeusEventos ir={ir} meusEventos={meusEventos} />;
+    conteudo = <TelaMeusEventos ir={ir} meusEventos={meusEventos} eventosExplorar={eventosExplorar} perfilAtual={perfilAtual} />;
   } else if (atual.nome === "cadastrar-evento") {
     conteudo = <TelaCadastrarEvento voltar={voltar} acaoCriar={acaoCriarEvento} />;
   } else if (atual.nome === "editar-evento") {
@@ -1574,7 +1642,7 @@ export default function GerenciadorEventosApp() {
   } else if (atual.nome === "ticket") {
     conteudo = <TelaTicket inscricao={atual.dados} voltar={voltar} acaoCancelar={acaoCancelarMinhaInscricao} />;
   } else if (atual.nome === "perfil") {
-    conteudo = <TelaPerfil sair={sair} ir={ir} />;
+    conteudo = <TelaPerfil sair={sair} ir={ir} perfilAtual={perfilAtual} setPerfilAtual={setPerfilAtual} />;
   } else if (atual.nome === "alterar-senha") {
     conteudo = <TelaAlterarSenha voltar={voltar} />;
   } else if (atual.nome === "notificacoes") {

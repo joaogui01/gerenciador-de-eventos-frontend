@@ -50,7 +50,7 @@ npm run dev
 - Notificações
 - Meus Eventos (com abas Ativos/Encerrados)
 - Minhas Inscrições (com abas Ativos/Encerrados)
-- Editar Meu Perfil (com Atualizar Perfil / Editar Senha / Sair)
+- Editar Meu Perfil (com Atualizar Perfil / Editar Senha / Sair / alternar entre perfil Usuário e Administrador)
 - Alterar Senha
 
 **Fluxo do participante**
@@ -70,6 +70,9 @@ npm run dev
 **De fora, por decisão de produto:** nenhuma tela tem campo de preço — o projeto não envolve transação entre usuários.
 
 ## Status do projeto
+
+- [x] **Experiência de administrador**: o backend já dá acesso total ao perfil `ADMIN` (ele ignora a checagem de dono nos endpoints de evento/inscrição/ticket/check-in — pode gerenciar qualquer evento, não só os próprios). No frontend, isso aparece em "Meus Eventos": no perfil `ADMIN`, a tela mostra os eventos de todo mundo (com "Organizado por X" em quem não é o usuário logado), não só os que o usuário criou. Não existe (nem no backend, nem aqui) um painel de administração separado com gestão de usuários, banimento, etc. — isso exigiria endpoints novos.
+- [x] **Alternar entre perfil Usuário/Administrador**: como é tudo mock, adicionei um controle na tela de Perfil pra trocar entre as duas experiências sem precisar simular dois logins. Isso é só uma conveniência de protótipo — num app real, o perfil vem do próprio login (token JWT), ninguém escolhe.
 
 - [x] Projeto scaffoldado com Vite + React de verdade (`npm install && npm run dev`).
 - [x] Todas as telas do fluxo principal + telas de apoio (onboarding, notificações, recuperar/alterar senha, convidar, erro genérico) implementadas com dados de exemplo.

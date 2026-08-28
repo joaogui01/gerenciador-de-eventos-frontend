@@ -25,7 +25,7 @@ const COR = {
   iconeEscuro: "#0E5C48",
   verdeClaro: "#DFF7E2",
   fundo: "#F1FFF3",
-  azul: "#0068FF",
+  neon: "#00E676",
   branco: "#FFFFFF",
 };
 
@@ -302,6 +302,7 @@ function BotaoPerigo({ children, onClick }) {
   return (
     <button
       onClick={onClick}
+      className="ef-btn"
       style={{
         background: "transparent",
         color: "#B33A3A",
@@ -351,6 +352,7 @@ function NavInferior({ ativo, aoNavegar }) {
             key={chave}
             onClick={() => aoNavegar(chave)}
             aria-label={chave}
+            className={ativoAgora ? "ef-btn" : ""}
             style={{
               background: ativoAgora ? COR.verde : "transparent",
               border: "none",
@@ -396,6 +398,7 @@ function AbasStatus({ aba, setAba }) {
         <button
           key={op}
           onClick={() => setAba(op)}
+          className="ef-btn"
           style={{
             flex: 1,
             padding: "10px 0",
@@ -519,7 +522,7 @@ function TelaLogin({ ir, voltar, acaoLogin }) {
         <div style={{ textAlign: "right", marginTop: -8 }}>
           <button
             onClick={() => ir("recuperar-senha")}
-            style={{ background: "none", border: "none", color: COR.azul, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 0 }}
+            style={{ background: "none", border: "none", color: COR.neon, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 0 }}
           >
             Esqueceu sua senha?
           </button>
@@ -586,51 +589,50 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <div style={{ background: COR.verde, padding: "22px 20px 40px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 22 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
           <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, maxWidth: 260 }}>Olá, {usuarioMock.nome}</p>
           <button
             onClick={() => ir("notificacoes")}
             aria-label="Notificações"
+            className="ef-btn"
             style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center", flexShrink: 0 }}
           >
             <Bell size={18} color={COR.iconeEscuro} />
           </button>
         </div>
-        <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
-          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <button
-              onClick={() => ir("meus-eventos")}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
-            >
-              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Meus Eventos</p>
-              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{meusEventos.length}</p>
-            </button>
-          </div>
+        <div style={{ display: "flex", gap: 12, width: "100%" }}>
+          <button
+            onClick={() => ir("meus-eventos")}
+            className="ef-card"
+            style={{ flex: 1, background: "#00A986", border: "none", borderRadius: 20, padding: "14px 10px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
+          >
+            <p style={{ fontSize: 12, color: COR.branco, margin: 0, textAlign: "center" }}>Meus Eventos</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{meusEventos.length}</p>
+          </button>
 
-          <div style={{ width: 1, height: 28, background: COR.branco, flexShrink: 0 }} />
-
-          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <button
-              onClick={() => ir("minhas-inscricoes")}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
-            >
-              <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Minhas Inscrições</p>
-              <p style={{ fontSize: 20, fontWeight: 700, color: COR.branco, margin: 0, textAlign: "center" }}>{minhasInscricoes.length}</p>
-            </button>
-          </div>
+          <button
+            onClick={() => ir("minhas-inscricoes")}
+            className="ef-card"
+            style={{ flex: 1, background: COR.verdeClaro, border: "none", borderRadius: 20, padding: "14px 10px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}
+          >
+            <p style={{ fontSize: 12, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>Minhas Inscrições</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: COR.iconeEscuro, margin: 0, textAlign: "center" }}>{minhasInscricoes.length}</p>
+          </button>
         </div>
       </div>
       <Painel semSubir preencherTela>
         <div
+          className="ef-btn"
           style={{
-            background: COR.verde,
+            background: "transparent",
+            border: `1.5px solid ${COR.iconeEscuro}`,
             borderRadius: 999,
             padding: "10px 0",
             textAlign: "center",
             marginBottom: 18,
           }}
         >
-          <span style={{ fontSize: 14, fontWeight: 700, color: COR.iconeEscuro, textDecoration: "underline", textDecorationColor: COR.branco, textUnderlineOffset: 4 }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: COR.iconeEscuro }}>
             Explorar Eventos
           </span>
         </div>
@@ -649,6 +651,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
             <button
               key={op}
               onClick={() => setFiltro(op)}
+              className="ef-btn"
               style={{
                 flex: 1,
                 padding: "10px 0",
@@ -672,13 +675,15 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           <button
             key={ev.idEvento}
             onClick={() => ir("evento-explorar", ev)}
+            className="ef-card"
             style={{
               width: "100%",
-              background: "none",
+              background: COR.branco,
               border: "none",
+              borderRadius: 16,
               cursor: "pointer",
-              padding: "12px 0",
-              borderBottom: i < filtrados.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
+              padding: "14px 12px",
+              marginBottom: i < filtrados.length - 1 ? 10 : 0,
               display: "grid",
               gridTemplateColumns: "1fr 1fr 1fr",
               alignItems: "center",
@@ -687,7 +692,7 @@ function TelaHome({ ir, meusEventos, minhasInscricoes, eventosExplorar }) {
           >
             <span style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, textAlign: "left" }}>{ev.nomeEvento}</span>
             <span style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, textAlign: "center" }}>{ev.localEvento}</span>
-            <span style={{ fontSize: 13, color: COR.azul, fontWeight: 600, textAlign: "right", whiteSpace: "nowrap" }}>{ev.hora} — {ev.dataEvento}</span>
+            <span style={{ fontSize: 13, color: COR.neon, fontWeight: 600, textAlign: "right", whiteSpace: "nowrap" }}>{ev.hora} — {ev.dataEvento}</span>
           </button>
         ))}
       </Painel>
@@ -758,7 +763,7 @@ function TelaMeusEventos({ ir, meusEventos, eventosExplorar, perfilAtual }) {
       <TopoVerde
         titulo="Meus Eventos"
         acaoDireita={
-          <button onClick={() => ir("cadastrar-evento")} aria-label="Criar evento" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
+          <button onClick={() => ir("cadastrar-evento")} aria-label="Criar evento" className="ef-btn" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
             <Plus size={20} color={COR.iconeEscuro} />
           </button>
         }
@@ -779,14 +784,16 @@ function TelaMeusEventos({ ir, meusEventos, eventosExplorar, perfilAtual }) {
           <button
             key={ev.idEvento}
             onClick={() => ir("evento-gerenciar", ev)}
+            className="ef-card"
             style={{
               width: "100%",
-              background: "none",
+              background: COR.branco,
               border: "none",
+              borderRadius: 16,
               textAlign: "left",
               cursor: "pointer",
-              padding: "14px 0",
-              borderBottom: i < filtrados.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
+              padding: "14px 12px",
+              marginBottom: i < filtrados.length - 1 ? 10 : 0,
               display: "flex",
               gap: 14,
               alignItems: "flex-start",
@@ -802,7 +809,7 @@ function TelaMeusEventos({ ir, meusEventos, eventosExplorar, perfilAtual }) {
               {perfilAtual === "ADMIN" && ev.organizador && ev.organizador !== usuarioMock.nome && (
                 <p style={{ fontSize: 11, color: COR.iconeEscuro, opacity: 0.55, margin: "0 0 2px" }}>Organizado por {ev.organizador}</p>
               )}
-              <p style={{ fontSize: 12, color: COR.azul, fontWeight: 600, margin: 0 }}>{ev.hora} — {ev.dataEvento}</p>
+              <p style={{ fontSize: 12, color: COR.neon, fontWeight: 600, margin: 0 }}>{ev.hora} — {ev.dataEvento}</p>
             </div>
           </button>
         ))}
@@ -895,13 +902,13 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
         aoVoltar={voltar}
         acaoDireita={
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={() => ir("convidar", evento)} aria-label="Convidar participantes" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
+            <button onClick={() => ir("convidar", evento)} aria-label="Convidar participantes" className="ef-btn" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
               <Share2 size={18} color={COR.iconeEscuro} />
             </button>
-            <button onClick={() => ir("leitor-qr", evento)} aria-label="Escanear ticket" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
+            <button onClick={() => ir("leitor-qr", evento)} aria-label="Escanear ticket" className="ef-btn" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
               <ScanLine size={18} color={COR.iconeEscuro} />
             </button>
-            <button onClick={() => ir("editar-evento", evento)} aria-label="Editar evento" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
+            <button onClick={() => ir("editar-evento", evento)} aria-label="Editar evento" className="ef-btn" style={{ ...botaoIcone, background: COR.branco, borderRadius: "50%", width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
               <MoreVertical size={18} color={COR.iconeEscuro} />
             </button>
           </div>
@@ -920,14 +927,16 @@ function TelaGerenciarEvento({ evento, ir, voltar }) {
           <button
             key={p.idUsuario}
             onClick={() => ir("participante", { evento, participante: p })}
+            className="ef-card"
             style={{
               width: "100%",
-              background: "none",
+              background: COR.branco,
               border: "none",
+              borderRadius: 16,
               textAlign: "left",
               cursor: "pointer",
-              padding: "12px 0",
-              borderBottom: i < evento.participantes.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
+              padding: "12px 12px",
+              marginBottom: i < evento.participantes.length - 1 ? 10 : 0,
               display: "flex",
               alignItems: "center",
               gap: 12,
@@ -1080,14 +1089,16 @@ function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
           <button
             key={insc.idInscricao}
             onClick={() => ir("ticket", insc)}
+            className="ef-card"
             style={{
               width: "100%",
-              background: "none",
+              background: COR.branco,
               border: "none",
+              borderRadius: 16,
               textAlign: "left",
               cursor: "pointer",
-              padding: "14px 0",
-              borderBottom: i < filtrados.length - 1 ? "1px solid rgba(5,34,36,0.12)" : "none",
+              padding: "14px 12px",
+              marginBottom: i < filtrados.length - 1 ? 10 : 0,
               display: "flex",
               alignItems: "center",
               gap: 14,
@@ -1101,7 +1112,7 @@ function TelaMinhasInscricoes({ ir, minhasInscricoes }) {
               <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{insc.nomeEvento}</p>
               <p style={{ fontSize: 12, color: COR.iconeEscuro, opacity: 0.7, margin: 0 }}>{insc.localEvento}</p>
             </div>
-            <span style={{ fontSize: 12, color: COR.azul, fontWeight: 600 }}>{insc.hora} — {insc.dataEvento}</span>
+            <span style={{ fontSize: 12, color: COR.neon, fontWeight: 600 }}>{insc.hora} — {insc.dataEvento}</span>
           </button>
         ))}
       </Painel>
@@ -1244,6 +1255,7 @@ function TelaPerfil({ sair, ir, perfilAtual, setPerfilAtual }) {
               <button
                 key={p}
                 onClick={() => setPerfilAtual(p)}
+                className="ef-btn"
                 style={{
                   flex: 1,
                   padding: "10px 0",
@@ -1401,24 +1413,29 @@ function TelaRecuperarSenha({ voltar }) {
 // com o backend: qualquer fetch() que falhar pode renderizar essa tela no lugar do conteúdo normal.
 function TelaErro({ voltar, tentar }) {
   return (
-    <div style={{ background: COR.fundo, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, padding: "0 32px", textAlign: "center" }}>
-      <div style={{ width: 74, height: 74, borderRadius: "50%", background: COR.verdeClaro, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <TriangleAlert size={32} color={COR.iconeEscuro} />
-      </div>
-      <p style={{ fontSize: 18, fontWeight: 800, color: COR.iconeEscuro, margin: 0 }}>Algo Deu Errado</p>
-      <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, lineHeight: 1.6, maxWidth: 280, margin: 0 }}>
-        Não conseguimos completar essa ação. Verifique sua conexão e tente novamente.
-      </p>
-      <div style={{ height: 8 }} />
-      <div style={{ width: "100%", maxWidth: 280 }}>
-        {tentar && (
-          <>
-            <BotaoPrimario onClick={tentar}>Tentar Novamente</BotaoPrimario>
-            <div style={{ height: 10 }} />
-          </>
-        )}
-        <BotaoClaro onClick={voltar}>Voltar Para O Início</BotaoClaro>
-      </div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <TopoVerde titulo="Ops" />
+      <Painel preencherTela>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", textAlign: "center", gap: 14 }}>
+          <div className="ef-avatar" style={{ width: 74, height: 74, borderRadius: "50%", background: COR.verdeClaro, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <TriangleAlert size={32} color={COR.iconeEscuro} />
+          </div>
+          <p style={{ fontSize: 18, fontWeight: 800, color: COR.iconeEscuro, margin: 0 }}>Algo Deu Errado</p>
+          <p style={{ fontSize: 13, color: COR.iconeEscuro, opacity: 0.7, lineHeight: 1.6, maxWidth: 280, margin: 0 }}>
+            Não conseguimos completar essa ação. Verifique sua conexão e tente novamente.
+          </p>
+          <div style={{ height: 8 }} />
+          <div style={{ width: "100%", maxWidth: 280 }}>
+            {tentar && (
+              <>
+                <BotaoPrimario onClick={tentar}>Tentar Novamente</BotaoPrimario>
+                <div style={{ height: 10 }} />
+              </>
+            )}
+            <BotaoClaro onClick={voltar}>Voltar Para O Início</BotaoClaro>
+          </div>
+        </div>
+      </Painel>
     </div>
   );
 }
@@ -1445,7 +1462,7 @@ function TelaNotificacoes({ voltar }) {
             <div style={{ flex: 1 }}>
               <p style={{ fontWeight: 700, fontSize: 14, color: COR.iconeEscuro, margin: 0 }}>{n.titulo}</p>
               <p style={{ fontSize: 12, color: COR.iconeEscuro, opacity: 0.7, margin: "2px 0" }}>{n.texto}</p>
-              <p style={{ fontSize: 11, color: COR.azul, fontWeight: 600, margin: 0 }}>{n.quando}</p>
+              <p style={{ fontSize: 11, color: COR.neon, fontWeight: 600, margin: 0 }}>{n.quando}</p>
             </div>
           </div>
         ))}
